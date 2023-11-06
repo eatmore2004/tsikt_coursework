@@ -9,7 +9,6 @@ public class Book extends BaseEntity {
     private final int year;
     private final int pages;
     private Date rentedAt;
-    private Date returnedAt;
     private UUID rentedBy;
 
     public Book(String title, String author, String genre, int year, int pages) {
@@ -44,14 +43,6 @@ public class Book extends BaseEntity {
         this.rentedAt = rentedAt;
     }
 
-    public Date getReturnedAt() {
-        return returnedAt;
-    }
-
-    public void setReturnedAt(Date returnedAt) {
-        this.returnedAt = returnedAt;
-    }
-
     public UUID getRentedBy() {
         return rentedBy;
     }
@@ -66,7 +57,6 @@ public class Book extends BaseEntity {
     }
 
     private void Return() {
-        this.returnedAt = new Date();
         this.rentedBy = null;
     }
 }
