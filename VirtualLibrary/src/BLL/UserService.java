@@ -2,24 +2,14 @@ package BLL;
 
 import BLL_Abstractions.IUserService;
 import Core.Models.User;
+import DAL_Abstractions.IRepository;
 
 import java.util.List;
-import java.util.function.Predicate;
 
-public class UserService implements IUserService {
-    @Override
-    public List<User> getAll() {
-        return null;
-    }
+public class UserService extends GenericService implements IUserService {
 
-    @Override
-    public List<User> getAllByPredicate(Predicate<User> predicate) {
-        return null;
-    }
-
-    @Override
-    public void saveAll(List<User> items) {
-
+    public UserService(IRepository repository) {
+        super(repository);
     }
 
     @Override
@@ -78,12 +68,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void loginUser(String username, String password) {
-
-    }
-
-    @Override
-    public void logoutUser() {
-
+    public User loginUser(String username, String password) {
+        return null;
     }
 }

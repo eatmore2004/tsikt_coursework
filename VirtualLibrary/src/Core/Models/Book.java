@@ -4,17 +4,27 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Book extends BaseEntity {
-    private final String title;
-    private final String genre;
-    private final int year;
-    private final int pages;
+    private String title;
+    private String genre;
+    private String author;
+    private int year;
+    private int pages;
     private Date rentedAt;
     private UUID rentedBy;
 
-    public Book(String title, String author, String genre, int year, int pages) {
-        super();
+    public Book(String title, String genre, String author, int year, int pages) {
         this.title = title;
         this.genre = genre;
+        this.author = author;
+        this.year = year;
+        this.pages = pages;
+    }
+
+    public Book(UUID id, String title, String genre, String author, int year, int pages) {
+        super(id);
+        this.title = title;
+        this.genre = genre;
+        this.author = author;
         this.year = year;
         this.pages = pages;
     }
