@@ -2,6 +2,7 @@ package BLL;
 
 import BLL_Abstractions.IGenericService;
 import Core.Models.BaseEntity;
+import Core.Models.Book;
 import Core.Models.Result;
 import DAL_Abstractions.IRepository;
 
@@ -18,7 +19,7 @@ public class GenericService implements IGenericService {
     }
 
     @Override
-    public Result<BaseEntity> GetAll() {
+    public Result<List<BaseEntity>> GetAll() {
         return repository.GetAll();
     }
 

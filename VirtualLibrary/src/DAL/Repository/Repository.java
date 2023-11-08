@@ -29,7 +29,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 
         ResultSet resultSet = resultSetResult.getData();
         List<T> entities = new ArrayList<>();
-
+        if (resultSet == null) return new Result<>("No data found",false);
         try {
             while (resultSet.next()) {
                 T entity = clazz.newInstance();
@@ -40,7 +40,15 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 
                 for (Field field : clazz.getDeclaredFields()) {
                     String fieldName = field.getName();
-                    if (!fieldName.equals("id")) {
+                    if (fieldName.equals("rentedBy")) {
+                        Object value = resultSet.getObject(fieldName);
+                        field.setAccessible(true);
+                        if (!value.equals("null")) {
+                            field.set(entity, UUID.fromString(value.toString()));
+                        }else {
+                            field.set(entity, null);
+                        }
+                    }else if (!fieldName.equals("id")) {
                         Object value = resultSet.getObject(fieldName);
                         field.setAccessible(true);
                         field.set(entity, value);

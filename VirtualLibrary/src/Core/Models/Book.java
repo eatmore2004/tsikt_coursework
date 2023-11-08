@@ -9,8 +9,11 @@ public class Book extends BaseEntity {
     private String author;
     private int year;
     private int pages;
-    private Date rentedAt;
+    private String rentedAt;
     private UUID rentedBy;
+
+    public Book() {
+    }
 
     public Book(String title, String genre, String author, int year, int pages) {
         this.title = title;
@@ -45,11 +48,31 @@ public class Book extends BaseEntity {
         return pages;
     }
 
-    public Date getRentedAt() {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public String getRentedAt() {
         return rentedAt;
     }
 
-    public void setRentedAt(Date rentedAt) {
+    public void setRentedAt(String rentedAt) {
         this.rentedAt = rentedAt;
     }
 
@@ -61,12 +84,20 @@ public class Book extends BaseEntity {
         this.rentedBy = rentedBy;
     }
 
-    private void Rent(UUID userId) {
-        this.rentedAt = new Date();
-        this.rentedBy = userId;
+    public String getAuthor() {
+        return author;
     }
 
-    private void Return() {
-        this.rentedBy = null;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                ", pages=" + pages +
+                ", rentedAt=" + rentedAt +
+                ", rentedBy=" + rentedBy +
+                '}';
     }
 }

@@ -65,4 +65,15 @@ public class User extends BaseEntity{
     public void changePassword(String password) {
         this.passwordHash = password;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", surname=" + surname +
+                ", username=" + username +
+                ", email=" + email +
+                ", passwordHash=" + passwordHash +
+                '}';
+    }
 }
