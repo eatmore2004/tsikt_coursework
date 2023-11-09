@@ -1,8 +1,6 @@
 package DAL;
 
-import Core.Models.BaseEntity;
 import Core.Models.Result;
-import DAL.ConnectionBuilder;
 
 import java.sql.*;
 
