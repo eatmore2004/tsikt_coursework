@@ -58,12 +58,12 @@ public class User extends BaseEntity{
         this.email = email;
     }
 
-    public boolean checkPassword(String password) {
-        return this.passwordHash.equals(password);
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void changePassword(String password) {
-        this.passwordHash = password;
+    public void changePasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     @Override

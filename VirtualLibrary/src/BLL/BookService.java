@@ -16,7 +16,15 @@ public class BookService extends GenericService implements IBookService{
     }
 
     @Override
+    public Result<List<BaseEntity>> getAll() {
+        return GetAll();
+    }
+
+    @Override
     public Result<Book> getByTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return new Result<>("Title cannot be empty", false);
+        }
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)
@@ -32,12 +40,8 @@ public class BookService extends GenericService implements IBookService{
     }
 
     @Override
-    public Result<List<BaseEntity>> getAll() {
-        return GetAll();
-    }
-
-    @Override
     public Result<List<Book>> getAllByAuthor(String author) {
+        if (author == null || author.isEmpty()) return new Result<>("Author cannot be empty", false);
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)
@@ -51,6 +55,7 @@ public class BookService extends GenericService implements IBookService{
 
     @Override
     public Result<List<Book>> getAllByGenre(String genre) {
+        if (genre == null || genre.isEmpty()) return new Result<>("Genre cannot be empty", false);
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)
@@ -64,6 +69,7 @@ public class BookService extends GenericService implements IBookService{
 
     @Override
     public Result<List<Book>> getAllByYear(int year) {
+        if (year <= 0) return new Result<>("Year must be >0", false);
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)
