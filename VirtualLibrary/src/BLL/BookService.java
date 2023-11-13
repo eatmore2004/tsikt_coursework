@@ -6,6 +6,7 @@ import Core.Models.Book;
 import Core.Models.Result;
 import DAL_Abstractions.IRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -96,12 +97,41 @@ public class BookService extends GenericService implements IBookService{
 
     @Override
     public Result<String> rentBook(String title, UUID userId) {
-        return null;
+
+        if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
+
+        Result<Book> book_result = getByTitle(title);
+        if (!book_result.getSuccess()){
+            return new Result<>(book_result.getMessage(), false);
+        }
+
+        Book book = book_result.getData();
+        if (book.getRentedBy() != null) {
+            return new Result<>("Book is already rented", false);
+        }
+
+        book.setRentedBy(userId);
+        book.setRentedAt(new Date().toString());
+        return Edit(book);
     }
 
     @Override
-    public Result<String> returnBook(UUID bookId) {
-        return null;
+    public Result<String> returnBook(String title, UUID userId) {
+        if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
+
+        Result<Book> book_result = getByTitle(title);
+        if (!book_result.getSuccess()){
+            return new Result<>(book_result.getMessage(), false);
+        }
+
+        Book book = book_result.getData();
+        if (book.getRentedBy() == null) {
+            return new Result<>("Book is not rented", false);
+        }
+
+        book.setRentedAt(null);
+        book.setRentedBy(null);
+        return Edit(book);
     }
 
     @Override

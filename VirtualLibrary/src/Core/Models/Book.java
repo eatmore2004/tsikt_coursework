@@ -1,6 +1,5 @@
 package Core.Models;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class Book extends BaseEntity {
@@ -16,15 +15,6 @@ public class Book extends BaseEntity {
     }
 
     public Book(String title, String genre, String author, int year, int pages) {
-        this.title = title;
-        this.genre = genre;
-        this.author = author;
-        this.year = year;
-        this.pages = pages;
-    }
-
-    public Book(UUID id, String title, String genre, String author, int year, int pages) {
-        super(id);
         this.title = title;
         this.genre = genre;
         this.author = author;
