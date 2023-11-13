@@ -11,7 +11,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * BookService class implements IBookService interface
+ * created by Andrii Yeremenko
+ * @see IBookService
+ */
+
 public class BookService extends GenericService implements IBookService{
+
+    /**
+     * Constructor
+     * @param repository - IRepository object
+     */
     public BookService(IRepository repository) {
         super(repository);
     }
@@ -96,6 +107,45 @@ public class BookService extends GenericService implements IBookService{
     }
 
     @Override
+    public Result<List<Book>> getAllByOwner(UUID ownerId) {
+        Result<List<BaseEntity>> result = GetAll();
+        if (result.getSuccess()) {
+            List<Book> books = result.getData().stream().map(x -> (Book) x)
+                    .filter(x -> x.getRentedBy().equals(ownerId)).collect(Collectors.toList());
+            return new Result<>(books,
+                    (books.isEmpty())? "Such books not found" : "Books found!",true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
+
+    @Override
+    public Result<List<Book>> getAllNotTaken() {
+        Result<List<BaseEntity>> result = GetAll();
+        if (result.getSuccess()) {
+            List<Book> books = result.getData().stream().map(x -> (Book) x)
+                    .filter(x -> x.getRentedBy() == null).collect(Collectors.toList());
+            return new Result<>(books,
+                    (books.isEmpty())? "Such books not found" : "Books found!",true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
+
+    @Override
+    public Result<List<Book>> getAllTaken() {
+        Result<List<BaseEntity>> result = GetAll();
+        if (result.getSuccess()) {
+            List<Book> books = result.getData().stream().map(x -> (Book) x)
+                    .filter(x -> x.getRentedBy() != null).collect(Collectors.toList());
+            return new Result<>(books,
+                    (books.isEmpty())? "Such books not found" : "Books found!",true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
+
+    @Override
     public Result<String> rentBook(String title, UUID userId) {
 
         if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
@@ -131,6 +181,24 @@ public class BookService extends GenericService implements IBookService{
 
         book.setRentedAt(null);
         book.setRentedBy(null);
+        return Edit(book);
+    }
+
+    @Override
+    public Result<String> lendBook(String title, UUID ownerId, UUID userId){
+        if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
+
+        Result<Book> book_result = getByTitle(title);
+        if (!book_result.getSuccess()){
+            return new Result<>(book_result.getMessage(), false);
+        }
+
+        Book book = book_result.getData();
+        if (!book.getRentedBy().equals(ownerId)) {
+            return new Result<>("Book isn't rented by this user", false);
+        }
+
+        book.setRentedBy(userId);
         return Edit(book);
     }
 

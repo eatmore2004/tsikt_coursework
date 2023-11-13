@@ -2,6 +2,10 @@ package Core.Models;
 
 import java.util.UUID;
 
+/**
+ * Book class
+ * created by Andrii Yeremenko
+ */
 public class Book extends BaseEntity {
     private String title;
     private String genre;
@@ -11,9 +15,20 @@ public class Book extends BaseEntity {
     private String rentedAt;
     private UUID rentedBy;
 
+    /**
+     * Constructor
+     */
     public Book() {
     }
 
+    /**
+     * Constructor. On creation creates new instance, using passed parameters
+     * @param title
+     * @param genre
+     * @param author
+     * @param year
+     * @param pages
+     */
     public Book(String title, String genre, String author, int year, int pages) {
         this.title = title;
         this.genre = genre;
@@ -78,6 +93,10 @@ public class Book extends BaseEntity {
         return author;
     }
 
+    /**
+     * Generates string representation of Book object
+     * @return String - string representation of Book object
+     */
     @Override
     public String toString() {
         return "Book{" +

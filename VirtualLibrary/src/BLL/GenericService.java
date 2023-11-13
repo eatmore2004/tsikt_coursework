@@ -7,6 +7,11 @@ import DAL_Abstractions.IRepository;
 
 import java.util.List;
 
+/**
+ * GenericService class
+ * created by Andrii Yeremenko
+ * @see IGenericService
+ */
 public class GenericService implements IGenericService {
 
     private final IRepository repository;

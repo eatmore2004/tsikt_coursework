@@ -21,11 +21,11 @@ public class Main {
         Result<User> userResult = userService.loginUser("Andrushka", "12345678");
         if (!userResult.getSuccess()) System.out.println(userResult.getMessage());
 
-        Result<String> bookResult = bookService.rentBook("Essencialism", userResult.getData().getId());
-        if (!bookResult.getSuccess()) System.out.println(bookResult.getMessage());
+//        Result<String> bookResult = bookService.rentBook("Essencialism", userResult.getData().getId());
+//        if (!bookResult.getSuccess()) System.out.println(bookResult.getMessage());
 
-        Result<List<BaseEntity>> resultlist = bookService.getAll();
-        for (BaseEntity item : resultlist.getData()) {
+        Result<List<BaseEntity>> resultList = bookService.getAll();
+        for (BaseEntity item : resultList.getData()) {
             System.out.println(item.toString());
         }
     }
