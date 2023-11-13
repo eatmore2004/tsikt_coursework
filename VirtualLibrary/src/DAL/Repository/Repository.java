@@ -6,6 +6,7 @@ import DAL.MysqlDatabase.DatabaseHandler;
 import DAL_Abstractions.IRepository;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         if (resultSet == null) return new Result<>("No data found",false);
         try {
             while (resultSet.next()) {
-                T entity = clazz.newInstance();
+                T entity = clazz.getDeclaredConstructor().newInstance();
                 UUID id = UUID.fromString(resultSet.getString("id"));
                 Field idField = BaseEntity.class.getDeclaredField("id");
                 idField.setAccessible(true);
@@ -69,7 +70,9 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
             }
 
             resultSet.close();
-        } catch (SQLException | IllegalAccessException | InstantiationException | NoSuchFieldException e) {
+        } catch (SQLException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchFieldException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
             return new Result<>(e.getMessage(), false);
         }
