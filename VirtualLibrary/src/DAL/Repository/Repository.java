@@ -2,7 +2,7 @@ package DAL.Repository;
 
 import Core.Models.BaseEntity;
 import Core.Models.Result;
-import DAL.DatabaseHandler;
+import DAL.MysqlDatabase.DatabaseHandler;
 import DAL_Abstractions.IRepository;
 
 import java.lang.reflect.Field;
@@ -12,10 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository class. Implements IRepository interface
+ * created by Andrii Yeremenko
+ * @see IRepository
+ */
 public class Repository<T extends BaseEntity> implements IRepository<T>{
     private final DatabaseHandler databaseHandler;
     private final Class<T> clazz;
 
+    /**
+     * Constructor for Repository class
+     * @param clazz - class of entity
+     * @warning - clazz must be inherited from BaseEntity
+     */
     public Repository(Class<T> clazz) {
         this.clazz = clazz;
         databaseHandler = new DatabaseHandler();

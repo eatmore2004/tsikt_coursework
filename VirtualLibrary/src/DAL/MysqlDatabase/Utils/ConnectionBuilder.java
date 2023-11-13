@@ -1,13 +1,26 @@
-package DAL;
+package DAL.MysqlDatabase.Utils;
 
-import DAL.Utils.ConfigReader;
+import DAL.MysqlDatabase.Utils.ConfigReader;
 
+/**
+ * ConnectionBuilder class
+ * created by Andrii Yeremenko
+ */
 public class ConnectionBuilder {
     ConfigReader configReader;
 
+
+    /**
+     * Constructor. On creation creates instance of ConfigReader
+     */
     public ConnectionBuilder(){
         configReader = new ConfigReader();
     }
+
+    /**
+     * Getter for url
+     * @return String url
+     */
     public String getUrl(){
         return String.format("jdbc:sqlserver://%s:%d;databaseName=%s;encrypt=true;trustServerCertificate=true",
                 configReader.getHost(),
@@ -15,10 +28,18 @@ public class ConnectionBuilder {
                 configReader.getDatabaseName());
     }
 
+    /**
+     * Getter for username
+     * @return String username
+     */
     public String getUsername(){
         return configReader.getUsername();
     }
 
+    /**
+     * Getter for password
+     * @return String password
+     */
     public String getPassword(){
         return configReader.getPassword();
     }

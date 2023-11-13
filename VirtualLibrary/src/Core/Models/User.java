@@ -2,6 +2,10 @@ package Core.Models;
 
 import java.util.UUID;
 
+/**
+ * User class
+ * created by Andrii Yeremenko
+ */
 public class User extends BaseEntity{
 
     private String name;
@@ -10,9 +14,20 @@ public class User extends BaseEntity{
     private String email;
     private String passwordHash;
 
+    /**
+     * Empty Constructor
+     */
     public User() {
     }
 
+    /**
+     * Constructor. On creation creates new instance with random UUID, using passed parameters
+     * @param name
+     * @param surname
+     * @param username
+     * @param email
+     * @param passwordHash
+     */
     public User(String name, String surname, String username, String email, String passwordHash) {
         this.name = name;
         this.surname = surname;
@@ -21,6 +36,15 @@ public class User extends BaseEntity{
         this.passwordHash = passwordHash;
     }
 
+    /**
+     * Constructor. On creation creates new instance, using passed parameters
+     * @param id
+     * @param name
+     * @param surname
+     * @param username
+     * @param email
+     * @param passwordHash
+     */
     public User(UUID id, String name, String surname, String username, String email, String passwordHash) {
         super(id);
         this.name = name;
@@ -66,6 +90,10 @@ public class User extends BaseEntity{
         this.passwordHash = passwordHash;
     }
 
+    /**
+     * Method for getting string representation of User
+     * @return String - string representation of User
+     */
     @Override
     public String toString() {
         return "User{" +

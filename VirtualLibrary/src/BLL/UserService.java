@@ -9,6 +9,11 @@ import Security.PasswordHashing;
 
 import java.util.List;
 
+/**
+ * UserService class. Implements IUserService interface
+ * created by Andrii Yeremenko
+ * @see IUserService
+ */
 public class UserService extends GenericService implements IUserService {
 
     public UserService(IRepository repository) {
