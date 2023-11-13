@@ -15,7 +15,7 @@ public interface IBookService {
     Result<List<Book>> getAllByYear(int year);
     Result<List<Book>> getAllByPages(int pages);
     Result<String> rentBook(String title, UUID userId);
-    Result<String> returnBook(UUID bookId);
+    Result<String> returnBook(String title, UUID userId);
     Result<String> addBook(String title, String genre, String author, int year, int pages);
     Result<String> editBook(String title, String newTitle, String genre, String author, int year, int pages);
     Result<String> deleteByTitle(String title);
