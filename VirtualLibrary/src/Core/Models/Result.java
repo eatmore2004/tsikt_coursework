@@ -1,10 +1,12 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package Core.Models;
 
 /**
  * Result class. Stores data, message and success. Used for returning values with message and success.
  * @param <T>
- *
- * created by Andrii Yeremenko
  */
 public class Result<T>{
 

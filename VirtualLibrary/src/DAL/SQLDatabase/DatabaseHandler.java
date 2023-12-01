@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/13/23.
+ */
+
 package DAL.SQLDatabase;
 
 import Core.Models.Result;
@@ -5,10 +9,6 @@ import DAL.SQLDatabase.Utils.ConnectionBuilder;
 
 import java.sql.*;
 
-/**
- * DatabaseHandler class
- * created by Andrii Yeremenko
- */
 public class DatabaseHandler {
 
     /**

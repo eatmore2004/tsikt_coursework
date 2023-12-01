@@ -1,9 +1,9 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package DAL.SQLDatabase.Utils;
 
-/**
- * ConnectionBuilder class
- * created by Andrii Yeremenko
- */
 public class ConnectionBuilder {
     ConfigReader configReader;
 

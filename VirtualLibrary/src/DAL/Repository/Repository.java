@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package DAL.Repository;
 
 import Core.Models.BaseEntity;
@@ -15,7 +19,6 @@ import java.util.UUID;
 
 /**
  * Repository class. Implements IRepository interface
- * created by Andrii Yeremenko
  * @see IRepository
  */
 public class Repository<T extends BaseEntity> implements IRepository<T>{

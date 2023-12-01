@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL_Abstractions;
 
 import Core.Models.BaseEntity;
@@ -6,11 +10,8 @@ import Core.Models.Result;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
-/**
- * IBookService interface
- * created by Andrii Yeremenko
- */
 public interface IBookService {
 
     /**
@@ -25,6 +26,14 @@ public interface IBookService {
      * @return Result<List<BaseEntity>>
      */
     Result<List<BaseEntity>> getAll();
+
+    /**
+     * Method to get all books by predicate
+     * @param predicate
+     * @param <T>
+     * @return Result<T> - list of books
+     */
+    <T> Result<T> getAllByPredicate(Predicate<Book> predicate);
 
     /**
      * Method to get books by its title

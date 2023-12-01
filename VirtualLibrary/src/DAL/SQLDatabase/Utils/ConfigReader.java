@@ -1,13 +1,14 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package DAL.SQLDatabase.Utils;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * ConfigReader class
- * created by Andrii Yeremenko
- */
 public class ConfigReader {
     private String host;
     private int port;

@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL;
 
 import BLL_Abstractions.IBookService;
@@ -14,10 +18,8 @@ import java.util.stream.Collectors;
 
 /**
  * BookService class implements IBookService interface
- * created by Andrii Yeremenko
  * @see IBookService
  */
-
 public class BookService extends GenericService implements IBookService{
 
     /**
@@ -33,7 +35,7 @@ public class BookService extends GenericService implements IBookService{
         return GetAll();
     }
 
-    private <T> Result<T> getAllByPredicate(Predicate<Book> predicate) {
+    public <T> Result<T> getAllByPredicate(Predicate<Book> predicate) {
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)

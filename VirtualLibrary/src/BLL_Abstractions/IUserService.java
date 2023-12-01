@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL_Abstractions;
 
 import Core.Models.BaseEntity;
@@ -5,18 +9,31 @@ import Core.Models.Result;
 import Core.Models.User;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Predicate;
 
-/**
- * IUserService interface
- * created by Andrii Yeremenko
- */
 public interface IUserService extends IGenericService{
+
+    /**
+     * Method to get user by its id
+     * @param id
+     * @return Result<User> - user
+     */
+    Result<User> getByID(UUID id);
 
     /**
      * Method to get all users
      * @return Result<List<BaseEntity>>
      */
     Result<List<BaseEntity>> getAll();
+
+    /**
+     * Method to get all users by predicate
+     * @param predicate
+     * @param <T>
+     * @return Result<T> - list of users
+     */
+    <T> Result<T> getAllByPredicate(Predicate<User> predicate);
 
     /**
      * Method to get all users by first name
@@ -41,38 +58,39 @@ public interface IUserService extends IGenericService{
 
     /**
      * Method to change user password
-     * @param user
+     * @param userId
      * @param newPassword
      * @return Result<String> - message
      */
-    Result<String> changePassword(User user, String newPassword);
+    Result<String> changePassword(UUID userId, String newPassword);
 
     /**
      * Method to change user email
-     * @param user
+     * @param userId
      * @param newEmail
      * @return Result<String> - message
      */
-    Result<String> changeEmail(User user, String newEmail);
+    Result<String> changeEmail(UUID userId, String newEmail);
 
     /**
      * Method to change user first name
-     * @param user
+     * @param userId
      * @param newFirstName
      * @return Result<String> - message
      */
-    Result<String> changeFirstName(User user, String newFirstName);
+    Result<String> changeFirstName(UUID userId, String newFirstName);
 
     /**
      * Method to change user last name
-     * @param user
+     * @param userId
      * @param newLastName
      * @return Result<String> - message
      */
-    Result<String> changeLastName(User user, String newLastName);
+    Result<String> changeLastName(UUID userId, String newLastName);
 
     /**
      * Method to register new user
+     *
      * @param name
      * @param surname
      * @param username
@@ -80,7 +98,7 @@ public interface IUserService extends IGenericService{
      * @param password
      * @return Result<String> - message
      */
-    Result<String> registerUser(String name, String surname, String username, String email, String password);
+    Result<UUID> registerUser(String name, String surname, String username, String email, String password);
 
     /**
      * Method to login user
@@ -92,8 +110,8 @@ public interface IUserService extends IGenericService{
 
     /**
      * Method to delete user
-     * @param username
+     * @param userId
      * @return Result<String> - message
      */
-    Result<String> deleteUser(String username);
+    Result<String> deleteUser(UUID userId);
 }

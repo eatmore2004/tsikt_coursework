@@ -1,11 +1,11 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package Core.Models;
 
 import java.util.UUID;
 
-/**
- * Book class
- * created by Andrii Yeremenko
- */
 public class Book extends BaseEntity {
     private String title;
     private String genre;

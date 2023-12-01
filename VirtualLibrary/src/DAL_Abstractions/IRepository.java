@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package DAL_Abstractions;
 
 import Core.Models.BaseEntity;
@@ -7,8 +11,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 /**
- * IRepository interface
- * created by Andrii Yeremenko
+ *
  */
 public interface IRepository<T extends BaseEntity> {
 
