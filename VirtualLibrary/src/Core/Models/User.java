@@ -1,11 +1,11 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package Core.Models;
 
 import java.util.UUID;
 
-/**
- * User class
- * created by Andrii Yeremenko
- */
 public class User extends BaseEntity{
 
     private String name;
@@ -82,10 +82,18 @@ public class User extends BaseEntity{
         this.email = email;
     }
 
+    /**
+     * Method for getting password hash
+     * @return String - hashed password
+     */
     public String getPasswordHash() {
         return passwordHash;
     }
 
+    /**
+     * Method for changing password hash
+     * @param passwordHash - hashed password
+     */
     public void changePasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }

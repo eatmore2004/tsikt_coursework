@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL_Abstractions;
 
 import Core.Models.BaseEntity;
@@ -6,25 +10,37 @@ import Core.Models.Result;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
-/**
- * IBookService interface
- * created by Andrii Yeremenko
- */
 public interface IBookService {
 
     /**
-     * Method to get book by title
-     * @param title
-     * @return Result<Book>
+     * Method to get book by its id
+     * @param id
+     * @return Result<Book> - book
      */
-    Result<Book> getByTitle(String title);
+    Result<Book> getByID(UUID id);
 
     /**
      * Method to get all books
      * @return Result<List<BaseEntity>>
      */
     Result<List<BaseEntity>> getAll();
+
+    /**
+     * Method to get all books by predicate
+     * @param predicate
+     * @param <T>
+     * @return Result<T> - list of books
+     */
+    <T> Result<T> getAllByPredicate(Predicate<Book> predicate);
+
+    /**
+     * Method to get books by its title
+     * @param title
+     * @return Result<List<Book>> - list of books
+     */
+    Result<List<Book>> getAllByTitle(String title);
 
     /**
      * Method to get all books by author
@@ -74,6 +90,20 @@ public interface IBookService {
     Result<List<Book>> getAllTaken();
 
     /**
+     * Method to get all free books by title
+     * @param title
+     * @return Result<List<Book>> - list of books
+     */
+    Result<List<Book>> getAllFreeByTitle(String title);
+
+    /**
+     * Method to get all taken books by title
+     * @param title
+     * @return Result<List<Book>> - list of books
+     */
+    Result<List<Book>> getAllTakenByTitle(String title);
+
+    /**
      * Method to rent book
      * @param title
      * @param userId
@@ -83,23 +113,24 @@ public interface IBookService {
 
     /**
      * Method to return book
-     * @param title
+     * @param bookId
      * @param userId
      * @return Result<String> - message
      */
-    Result<String> returnBook(String title, UUID userId);
+    Result<String> returnBook(UUID bookId, UUID userId);
 
     /**
      * Method to lend book from one user to another
-     * @param title
+     * @param bookId
      * @param ownerId
      * @param userId
      * @return Result<String> - message
      */
-    Result<String> lendBook(String title, UUID ownerId, UUID userId);
+    Result<String> lendBook(UUID bookId, UUID ownerId, UUID userId);
 
     /**
      * Method to add book
+     *
      * @param title
      * @param genre
      * @param author
@@ -107,24 +138,19 @@ public interface IBookService {
      * @param pages
      * @return Result<String> - message
      */
-    Result<String> addBook(String title, String genre, String author, int year, int pages);
+    Result<UUID> addBook(String title, String genre, String author, int year, int pages);
 
     /**
-     * Method to edit book
-     * @param title
-     * @param newTitle
-     * @param genre
-     * @param author
-     * @param year
-     * @param pages
+     * Method to delete book by its UUID
+     * @param id
      * @return Result<String> - message
      */
-    Result<String> editBook(String title, String newTitle, String genre, String author, int year, int pages);
+    Result<String> deleteByID(UUID id);
 
     /**
-     * Method to delete book by its title
-     * @param title
+     * Method to delete book by its owner
+     * @param ownerId
      * @return Result<String> - message
      */
-    Result<String> deleteByTitle(String title);
+    Result<String> returnAllByOwner(UUID ownerId);
 }

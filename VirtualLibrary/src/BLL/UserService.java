@@ -1,5 +1,10 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL;
 
+import BLL_Abstractions.IBookService;
 import BLL_Abstractions.IUserService;
 import Core.Models.BaseEntity;
 import Core.Models.Result;
@@ -8,41 +13,64 @@ import DAL_Abstractions.IRepository;
 import Security.PasswordHashing;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * UserService class. Implements IUserService interface
- * created by Andrii Yeremenko
  * @see IUserService
  */
 public class UserService extends GenericService implements IUserService {
 
-    public UserService(IRepository repository) {
-        super(repository);
+    private final IBookService bookService;
+
+    public UserService(IRepository userRepository, IBookService bookService){
+        super(userRepository);
+        this.bookService = bookService;
     }
 
+
+    @Override
+    public Result<User> getByID(UUID id) {
+        if (id == null) {
+            return new Result<>("Invalid input", false);
+        }
+
+        Result<List<User>> result = getAllByPredicate(x -> x.getId().equals(id));
+
+        if (result.getSuccess()) {
+            return new Result<>(result.getData().get(0), true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
 
     @Override
     public Result<List<BaseEntity>> getAll() {
         return GetAll();
     }
 
+    public <T> Result<T> getAllByPredicate(Predicate<User> predicate) {
+        Result<List<BaseEntity>> result = GetAll();
+        if (result.getSuccess()) {
+            List<User> books = result.getData().stream().map(x -> (User) x)
+                    .filter(predicate).collect(Collectors.toList());
+
+            if (books.isEmpty()) return new Result<>("No such users", false);
+            return (Result<T>) new Result<>(books, true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
+
+
     @Override
     public Result<List<User>> getAllByFirstName(String firstName) {
         if (firstName == null || firstName.isEmpty()) {
             return new Result<>("First name cannot be empty", false);
         }
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()){
-            List<User> users = result.getData().stream().map(x -> (User) x)
-                    .filter(x -> x.getName().equals(firstName)).toList();
-            if (users.isEmpty()){
-                return new Result<>("Such users not found", false);
-            } else {
-                return new Result<>(users, true);
-            }
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getName().equals(firstName));
     }
 
     @Override
@@ -50,18 +78,7 @@ public class UserService extends GenericService implements IUserService {
         if (lastName == null || lastName.isEmpty()) {
             return new Result<>("Last name cannot be empty", false);
         }
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()){
-            List<User> users = result.getData().stream().map(x -> (User) x)
-                    .filter(x -> x.getSurname().equals(lastName)).toList();
-            if (users.isEmpty()){
-                return new Result<>("Such users not found", false);
-            } else {
-                return new Result<>(users, true);
-            }
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getSurname().equals(lastName));
     }
 
     @Override
@@ -69,14 +86,19 @@ public class UserService extends GenericService implements IUserService {
         if (email == null || email.isEmpty()) {
             return new Result<>("Email cannot be empty", false);
         }
-        Result<List<BaseEntity>> result = GetAll();
+        return getAllByPredicate(x -> x.getEmail().equals(email));
+    }
+
+    @Override
+    public Result<String> changePassword(UUID userId, String newPassword) {
+        Result<User> result = getByID(userId);
         if (result.getSuccess()){
-            List<User> users = result.getData().stream().map(x -> (User) x)
-                    .filter(x -> x.getEmail().equals(email)).toList();
-            if (users.isEmpty()){
-                return new Result<>("Such users not found", false);
-            } else {
-                return new Result<>(users, true);
+            User user = result.getData();
+            try {
+                user.changePasswordHash(PasswordHashing.hashPassword(newPassword));
+                return Edit(user);
+            } catch (Exception e) {
+                return new Result<>(e.getMessage(), false);
             }
         } else {
             return new Result<>(result.getMessage(), false);
@@ -84,75 +106,43 @@ public class UserService extends GenericService implements IUserService {
     }
 
     @Override
-    public Result<String> changePassword(User user, String newPassword) {
-        if (newPassword == null || newPassword.isEmpty()) {
-            return new Result<>("Password cannot be empty", false);
-        }
-        if (user == null) {
-            return new Result<>("User cannot be null", false);
-        }
-        try {
-            user.changePasswordHash(PasswordHashing.hashPassword(newPassword));
-        } catch (Exception e) {
-            return new Result<>(e.getMessage(), false);
-        }
-
-        return Edit(user);
-    }
-
-    @Override
-    public Result<String> changeEmail(User user, String newEmail) {
-        if (newEmail == null || newEmail.isEmpty()) {
-            return new Result<>("Email cannot be empty", false);
-        }
-        if (user == null) {
-            return new Result<>("User cannot be null", false);
-        }
-        try {
+    public Result<String> changeEmail(UUID userId, String newEmail) {
+        Result<User> result = getByID(userId);
+        if (result.getSuccess()){
+            User user = result.getData();
             user.setEmail(newEmail);
-        } catch (Exception e) {
-            return new Result<>(e.getMessage(), false);
+            return Edit(user);
+        } else {
+            return new Result<>(result.getMessage(), false);
         }
-
-        return Edit(user);
     }
 
     @Override
-    public Result<String> changeFirstName(User user, String newFirstName) {
-        if (newFirstName == null || newFirstName.isEmpty()) {
-            return new Result<>("First name cannot be empty", false);
-        }
-        if (user == null) {
-            return new Result<>("User cannot be null", false);
-        }
-        try {
+    public Result<String> changeFirstName(UUID userId, String newFirstName) {
+        Result<User> result = getByID(userId);
+        if (result.getSuccess()){
+            User user = result.getData();
             user.setName(newFirstName);
-        } catch (Exception e) {
-            return new Result<>(e.getMessage(), false);
+            return Edit(user);
+        } else {
+            return new Result<>(result.getMessage(), false);
         }
-
-        return Edit(user);
     }
 
     @Override
-    public Result<String> changeLastName(User user, String newLastName) {
-        if (newLastName == null || newLastName.isEmpty()) {
-            return new Result<>("Last name cannot be empty", false);
-        }
-        if (user == null) {
-            return new Result<>("User cannot be null", false);
-        }
-        try {
+    public Result<String> changeLastName(UUID userId, String newLastName) {
+        Result<User> result = getByID(userId);
+        if (result.getSuccess()){
+            User user = result.getData();
             user.setSurname(newLastName);
-        } catch (Exception e) {
-            return new Result<>(e.getMessage(), false);
+            return Edit(user);
+        } else {
+            return new Result<>(result.getMessage(), false);
         }
-
-        return Edit(user);
     }
 
     @Override
-    public Result<String> registerUser(String name, String surname, String username, String email, String password) {
+    public Result<UUID> registerUser(String name, String surname, String username, String email, String password) {
         if (name == null || name.isEmpty()) {
             return new Result<>("Name cannot be empty", false);
         }
@@ -177,7 +167,14 @@ public class UserService extends GenericService implements IUserService {
             return new Result<>(e.getMessage(), false);
         }
 
-        return Add(new User(name, surname, username, email, passwordHash));
+        User user = new User(UUID.randomUUID(), name, surname, username, email, passwordHash);
+
+        Result<String> result = Add(user);
+        if (result.getSuccess()) {
+            return new Result<>(user.getId(), result.getMessage(), true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
     }
 
     @Override
@@ -212,21 +209,18 @@ public class UserService extends GenericService implements IUserService {
         }
     }
 
-    public Result<String> deleteUser(String username){
-        if (username == null || username.isEmpty()) {
-            return new Result<>("Username cannot be empty", false);
+    public Result<String> deleteUser(UUID userId){
+        if (userId == null) {
+            return new Result<>("Invalid input", false);
         }
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()){
-            List<User> users = result.getData().stream().map(x -> (User) x)
-                    .filter(x -> x.getUsername().equals(username)).toList();
-            if (users.isEmpty()){
-                return new Result<>("Such users not found", false);
-            } else {
-                return Delete(users.get(0));
-            }
+
+        Result<User> user = getByID(userId);
+        if (user.getSuccess()){
+            Result<String> returnedAllByOwner = bookService.returnAllByOwner(user.getData().getId());
+            Result<String> deletedUser = Delete(user.getData());
+            return new Result<>(returnedAllByOwner.getMessage() + "\n" + deletedUser.getMessage(), deletedUser.getSuccess());
         } else {
-            return new Result<>(result.getMessage(), false);
+            return new Result<>(user.getMessage(), false);
         }
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/9/23.
+ */
+
 package Security;
 
 import org.w3c.dom.Document;
@@ -9,10 +13,6 @@ import java.io.File;
 import java.security.MessageDigest;
 import java.util.Base64;
 
-/**
- * PasswordHashing class
- * created by Andrii Yeremenko
- */
 public class PasswordHashing {
 
     /**

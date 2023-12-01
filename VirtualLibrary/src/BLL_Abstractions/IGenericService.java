@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL_Abstractions;
 
 import Core.Models.BaseEntity;
@@ -7,7 +11,6 @@ import java.util.List;
 
 /**
  * IGenericService interface
- * created by Andrii Yeremenko
  * @param <T extends BaseEntity> - generic type of BaseEntity
  */
 public interface IGenericService<T extends BaseEntity> {

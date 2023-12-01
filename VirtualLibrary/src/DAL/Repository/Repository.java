@@ -1,11 +1,16 @@
+/**
+ * Created by Andrii Yeremenko on 11/7/23.
+ */
+
 package DAL.Repository;
 
 import Core.Models.BaseEntity;
 import Core.Models.Result;
-import DAL.MysqlDatabase.DatabaseHandler;
+import DAL.SQLDatabase.DatabaseHandler;
 import DAL_Abstractions.IRepository;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +19,6 @@ import java.util.UUID;
 
 /**
  * Repository class. Implements IRepository interface
- * created by Andrii Yeremenko
  * @see IRepository
  */
 public class Repository<T extends BaseEntity> implements IRepository<T>{
@@ -42,7 +46,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         if (resultSet == null) return new Result<>("No data found",false);
         try {
             while (resultSet.next()) {
-                T entity = clazz.newInstance();
+                T entity = clazz.getDeclaredConstructor().newInstance();
                 UUID id = UUID.fromString(resultSet.getString("id"));
                 Field idField = BaseEntity.class.getDeclaredField("id");
                 idField.setAccessible(true);
@@ -69,7 +73,9 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
             }
 
             resultSet.close();
-        } catch (SQLException | IllegalAccessException | InstantiationException | NoSuchFieldException e) {
+        } catch (SQLException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchFieldException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
             return new Result<>(e.getMessage(), false);
         }

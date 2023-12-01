@@ -1,3 +1,7 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package BLL;
 
 import BLL_Abstractions.IGenericService;
@@ -9,7 +13,6 @@ import java.util.List;
 
 /**
  * GenericService class
- * created by Andrii Yeremenko
  * @see IGenericService
  */
 public class GenericService implements IGenericService {

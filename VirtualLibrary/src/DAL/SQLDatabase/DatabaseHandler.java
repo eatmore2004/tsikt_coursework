@@ -1,14 +1,14 @@
-package DAL.MysqlDatabase;
+/**
+ * Created by Andrii Yeremenko on 11/13/23.
+ */
+
+package DAL.SQLDatabase;
 
 import Core.Models.Result;
-import DAL.MysqlDatabase.Utils.ConnectionBuilder;
+import DAL.SQLDatabase.Utils.ConnectionBuilder;
 
 import java.sql.*;
 
-/**
- * DatabaseHandler class
- * created by Andrii Yeremenko
- */
 public class DatabaseHandler {
 
     /**
@@ -66,9 +66,13 @@ public class DatabaseHandler {
      * @return Result<ResultSet> - ResultSet with some values fetched from database
      */
     private Result<ResultSet> Execute(String query) {
-        DAL.MysqlDatabase.Utils.ConnectionBuilder builder = new DAL.MysqlDatabase.Utils.ConnectionBuilder();
+        DAL.SQLDatabase.Utils.ConnectionBuilder builder = new DAL.SQLDatabase.Utils.ConnectionBuilder();
         try {
-            Connection connection = DriverManager.getConnection(builder.getUrl(), builder.getUsername(), builder.getPassword());
+            String url = builder.getUrl();
+            String username = builder.getUsername();
+            String password = builder.getPassword();
+
+            Connection connection = DriverManager.getConnection(url, username, password);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return new Result<>(resultSet, true);
@@ -83,7 +87,7 @@ public class DatabaseHandler {
      * @return Result<ResultSet> - ResultSet with statement execution result
      */
     private Result<ResultSet> ExecuteVoid(String query) {
-        DAL.MysqlDatabase.Utils.ConnectionBuilder builder = new ConnectionBuilder();
+        DAL.SQLDatabase.Utils.ConnectionBuilder builder = new ConnectionBuilder();
         try {
             Connection connection = DriverManager.getConnection(builder.getUrl(), builder.getUsername(), builder.getPassword());
             Statement statement = connection.createStatement();

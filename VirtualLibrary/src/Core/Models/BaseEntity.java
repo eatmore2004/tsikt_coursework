@@ -1,11 +1,11 @@
+/**
+ * Created by Andrii Yeremenko on 11/6/23.
+ */
+
 package Core.Models;
 
 import java.util.UUID;
 
-/**
- * BaseEntity class
- * created by Andrii Yeremenko
- */
 public class BaseEntity {
 
     private final UUID id;

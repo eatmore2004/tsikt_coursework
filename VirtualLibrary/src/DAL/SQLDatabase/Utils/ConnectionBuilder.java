@@ -1,11 +1,9 @@
-package DAL.MysqlDatabase.Utils;
-
-import DAL.MysqlDatabase.Utils.ConfigReader;
-
 /**
- * ConnectionBuilder class
- * created by Andrii Yeremenko
+ * Created by Andrii Yeremenko on 11/7/23.
  */
+
+package DAL.SQLDatabase.Utils;
+
 public class ConnectionBuilder {
     ConfigReader configReader;
 
