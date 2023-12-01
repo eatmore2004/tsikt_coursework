@@ -9,6 +9,7 @@ import DAL_Abstractions.IRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -32,117 +33,108 @@ public class BookService extends GenericService implements IBookService{
         return GetAll();
     }
 
-    @Override
-    public Result<Book> getByTitle(String title) {
-        if (title == null || title.isEmpty()) {
-            return new Result<>("Title cannot be empty", false);
-        }
+    private <T> Result<T> getAllByPredicate(Predicate<Book> predicate) {
         Result<List<BaseEntity>> result = GetAll();
         if (result.getSuccess()) {
             List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getTitle().equals(title)).toList();
-            if (books.isEmpty()) {
-                return new Result<>("Such book not found", false);
-            } else {
-                return new Result<>(books.get(0), "Book found!", true);
-            }
+                    .filter(predicate).collect(Collectors.toList());
+
+            if (books.isEmpty()) return new Result<>("No such books", false);
+            return (Result<T>) new Result<>(books, true);
         } else {
             return new Result<>(result.getMessage(), false);
         }
+    }
+
+    @Override
+    public Result<Book> getByID(UUID id) {
+        if (id == null) {
+            return new Result<>("Invalid input", false);
+        }
+
+        Result<List<Book>> result = getAllByPredicate(x -> x.getId().equals(id));
+
+        if (result.getSuccess()) {
+            return new Result<>(result.getData().get(0), true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+    }
+
+    @Override
+    public Result<List<Book>> getAllByTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return new Result<>("Title cannot be empty", false);
+        }
+        return getAllByPredicate(x -> x.getTitle().equals(title));
     }
 
     @Override
     public Result<List<Book>> getAllByAuthor(String author) {
         if (author == null || author.isEmpty()) return new Result<>("Author cannot be empty", false);
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getAuthor().equals(author)).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getAuthor().equals(author));
     }
 
     @Override
     public Result<List<Book>> getAllByGenre(String genre) {
         if (genre == null || genre.isEmpty()) return new Result<>("Genre cannot be empty", false);
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getGenre().equals(genre)).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getGenre().equals(genre));
     }
 
     @Override
     public Result<List<Book>> getAllByYear(int year) {
         if (year <= 0) return new Result<>("Year must be >0", false);
-        Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getYear() == year).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getYear() == year);
     }
 
     @Override
     public Result<List<Book>> getAllByPages(int pages) {
         Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getPages() == pages).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getPages() == pages);
     }
 
     @Override
     public Result<List<Book>> getAllByOwner(UUID ownerId) {
         Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getRentedBy().equals(ownerId)).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getRentedBy().equals(ownerId));
     }
 
     @Override
     public Result<List<Book>> getAllNotTaken() {
         Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getRentedBy() == null).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getRentedBy() == null);
     }
 
     @Override
     public Result<List<Book>> getAllTaken() {
         Result<List<BaseEntity>> result = GetAll();
-        if (result.getSuccess()) {
-            List<Book> books = result.getData().stream().map(x -> (Book) x)
-                    .filter(x -> x.getRentedBy() != null).collect(Collectors.toList());
-            return new Result<>(books,
-                    (books.isEmpty())? "Such books not found" : "Books found!",true);
-        } else {
-            return new Result<>(result.getMessage(), false);
-        }
+        return getAllByPredicate(x -> x.getRentedBy() != null);
+    }
+
+    @Override
+    public Result<List<Book>> getAllFreeByTitle(String title) {
+        if (title == null || title.isEmpty()) return new Result<>("Title cannot be empty", false);
+        Result<List<Book>> result = getAllByTitle(title);
+
+        if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
+
+        List<Book> books = result.getData().stream().filter(x -> x.getRentedBy() == null).toList();
+
+        if (books.isEmpty()) return new Result<>("No free books found", false);
+        return new Result<>(books, true);
+    }
+
+    @Override
+    public Result<List<Book>> getAllTakenByTitle(String title) {
+        if (title == null || title.isEmpty()) return new Result<>("Title cannot be empty", false);
+        Result<List<Book>> result = getAllByTitle(title);
+
+        if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
+
+        List<Book> books = result.getData().stream().filter(x -> x.getRentedBy() != null).toList();
+
+        if (books.isEmpty()) return new Result<>("No taken books found", false);
+        return new Result<>(books, true);
     }
 
     @Override
@@ -150,60 +142,56 @@ public class BookService extends GenericService implements IBookService{
 
         if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
 
-        Result<Book> book_result = getByTitle(title);
+        Result<List<Book>> book_result = getAllFreeByTitle(title);
         if (!book_result.getSuccess()){
             return new Result<>(book_result.getMessage(), false);
         }
 
-        Book book = book_result.getData();
-        if (book.getRentedBy() != null) {
-            return new Result<>("Book is already rented", false);
-        }
-
+        Book book = book_result.getData().get(0);
         book.setRentedBy(userId);
         book.setRentedAt(new Date().toString());
         return Edit(book);
     }
 
     @Override
-    public Result<String> returnBook(String title, UUID userId) {
-        if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
+    public Result<String> returnBook(UUID bookId, UUID userId) {
+        if (bookId == null || userId == null) return new Result<>("Invalid input", false);
 
-        Result<Book> book_result = getByTitle(title);
+        Result<Book> book_result = getByID(bookId);
         if (!book_result.getSuccess()){
             return new Result<>(book_result.getMessage(), false);
         }
 
         Book book = book_result.getData();
-        if (book.getRentedBy() == null) {
-            return new Result<>("Book is not rented", false);
-        }
 
-        book.setRentedAt(null);
+        if (book.getRentedBy() == null || !book.getRentedBy().equals(userId)) return new Result<>("This book is not rented by you", false);
+
         book.setRentedBy(null);
-        return Edit(book);
+        book.setRentedAt(null);
+        return Edit(book_result.getData());
     }
 
     @Override
-    public Result<String> lendBook(String title, UUID ownerId, UUID userId){
-        if (title.isEmpty() || userId == null) return new Result<>("Invalid input", false);
+    public Result<String> lendBook(UUID bookID, UUID ownerId, UUID userId){
+        if (bookID == null || userId == null) return new Result<>("Invalid input", false);
 
-        Result<Book> book_result = getByTitle(title);
+        Result<Book> book_result = getByID(bookID);
         if (!book_result.getSuccess()){
             return new Result<>(book_result.getMessage(), false);
         }
 
+        if (!book_result.getData().getRentedBy().equals(ownerId)) return new Result<>("This book is not rented by you", false);
+
         Book book = book_result.getData();
-        if (!book.getRentedBy().equals(ownerId)) {
-            return new Result<>("Book isn't rented by this user", false);
-        }
+
+        if (book.getRentedBy() == null || !book.getRentedBy().equals(ownerId)) return new Result<>("This book is not rented by you", false);
 
         book.setRentedBy(userId);
-        return Edit(book);
+        return Edit(book_result.getData());
     }
 
     @Override
-    public Result<String> addBook(String title, String genre, String author, int year, int pages) {
+    public Result<UUID> addBook(String title, String genre, String author, int year, int pages) {
         if (title == null || title.isEmpty() || genre == null || genre.isEmpty() || author == null
                 || author.isEmpty() || year <= 0 || pages <= 0) {
             return new Result<>("Invalid input", false);
@@ -211,47 +199,18 @@ public class BookService extends GenericService implements IBookService{
         Book book = new Book(title, genre, author, year, pages);
         Result<String> result = Add(book);
         if (result.getSuccess()) {
-            return new Result<>("Book added successfully", true);
+            return new Result<>(book.getId(),"Book added successfully", true);
         } else {
-            return new Result<>("Book could not be added",result.getMessage(), false);
+            return new Result<>(result.getMessage(), false);
         }
     }
 
     @Override
-    public Result<String> editBook(String title, String newTitle, String genre, String author, int year, int pages) {
-        if (title == null || title.isEmpty() || genre == null || genre.isEmpty() || author == null
-                || author.isEmpty() || year <= 0 || pages <= 0) {
+    public Result<String> deleteByID(UUID id) {
+        if (id == null) {
             return new Result<>("Invalid input", false);
         }
-
-        Result<Book> result = getByTitle(title);
-
-        if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
-
-        Book bookToEdit = result.getData();
-        bookToEdit.setTitle(newTitle);
-        bookToEdit.setGenre(genre);
-        bookToEdit.setAuthor(author);
-        bookToEdit.setYear(year);
-        bookToEdit.setPages(pages);
-        bookToEdit.setRentedAt(null);
-        bookToEdit.setRentedBy(null);
-
-        Result<String> editResult = Edit(bookToEdit);
-
-        if (editResult.getSuccess()) {
-            return new Result<>("Book edited successfully", true);
-        } else {
-            return new Result<>("Book could not be edited",editResult.getMessage(), false);
-        }
-    }
-
-    @Override
-    public Result<String> deleteByTitle(String title) {
-        if (title == null || title.isEmpty()) {
-            return new Result<>("Invalid input", false);
-        }
-        Result<Book> result = getByTitle(title);
+        Result<Book> result = getByID(id);
         if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
 
         Result<String> deleteResult = Delete(result.getData());
@@ -261,5 +220,25 @@ public class BookService extends GenericService implements IBookService{
         } else {
             return new Result<>("Book could not be deleted",deleteResult.getMessage(), false);
         }
+    }
+
+    @Override
+    public Result<String> returnAllByOwner(UUID ownerId) {
+        if (ownerId == null) {
+            return new Result<>("Invalid input", false);
+        }
+        Result<List<Book>> result = getAllByOwner(ownerId);
+        if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
+
+        if (result.getData().isEmpty()) return new Result<>("No books found", false);
+
+        for (Book book : result.getData()) {
+            book.setRentedAt(null);
+            book.setRentedBy(null);
+            Result<String> deleteResult = Edit(book);
+            if (!deleteResult.getSuccess()) return new Result<>(deleteResult.getMessage(), false);
+        }
+
+        return new Result<>("Books returned successfully", true);
     }
 }

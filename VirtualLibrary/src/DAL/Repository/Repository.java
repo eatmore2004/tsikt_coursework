@@ -2,7 +2,7 @@ package DAL.Repository;
 
 import Core.Models.BaseEntity;
 import Core.Models.Result;
-import DAL.MysqlDatabase.DatabaseHandler;
+import DAL.SQLDatabase.DatabaseHandler;
 import DAL_Abstractions.IRepository;
 
 import java.lang.reflect.Field;

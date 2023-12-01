@@ -1,6 +1,4 @@
-package DAL.MysqlDatabase.Utils;
-
-import DAL.MysqlDatabase.Utils.ConfigReader;
+package DAL.SQLDatabase.Utils;
 
 /**
  * ConnectionBuilder class

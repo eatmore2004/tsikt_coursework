@@ -1,5 +1,6 @@
 package BLL;
 
+import BLL_Abstractions.IBookService;
 import BLL_Abstractions.IUserService;
 import Core.Models.BaseEntity;
 import Core.Models.Result;
@@ -16,8 +17,11 @@ import java.util.List;
  */
 public class UserService extends GenericService implements IUserService {
 
-    public UserService(IRepository repository) {
-        super(repository);
+    private final IBookService bookService;
+
+    public UserService(IRepository userRepository, IBookService bookService){
+        super(userRepository);
+        this.bookService = bookService;
     }
 
 
@@ -223,7 +227,8 @@ public class UserService extends GenericService implements IUserService {
             if (users.isEmpty()){
                 return new Result<>("Such users not found", false);
             } else {
-                return Delete(users.get(0));
+                Result<String> freeBooks = bookService.returnAllByOwner(users.get(0).getId());
+                return new Result<>(Delete(users.get(0)).getSuccess() & freeBooks.getSuccess());
             }
         } else {
             return new Result<>(result.getMessage(), false);

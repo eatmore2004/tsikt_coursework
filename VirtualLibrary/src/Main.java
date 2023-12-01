@@ -15,18 +15,10 @@ public class Main {
 
         //Existing user Andrushka with password 12345678;
 
-        IUserService userService = new UserService(new Repository(User.class));
+
         IBookService bookService = new BookService(new Repository(Book.class));
+        IUserService userService = new UserService(new Repository(User.class), bookService);
 
-        Result<User> userResult = userService.loginUser("Andrushka", "12345678");
-        if (!userResult.getSuccess()) System.out.println(userResult.getMessage());
-
-//        Result<String> bookResult = bookService.rentBook("Essencialism", userResult.getData().getId());
-//        if (!bookResult.getSuccess()) System.out.println(bookResult.getMessage());
-
-        Result<List<BaseEntity>> resultList = bookService.getAll();
-        for (BaseEntity item : resultList.getData()) {
-            System.out.println(item.toString());
-        }
+        bookService.addBook("Good Omens", "Fantasy", "Terry Pratchett", 1990, 500);
     }
 }

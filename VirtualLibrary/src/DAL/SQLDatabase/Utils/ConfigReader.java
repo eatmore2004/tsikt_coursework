@@ -1,4 +1,4 @@
-package DAL.MysqlDatabase.Utils;
+package DAL.SQLDatabase.Utils;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -22,7 +22,7 @@ public class ConfigReader {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse("src/DAL/MysqlDatabase/server_config.xml");
+            Document document = builder.parse("src/DAL/SQLDatabase/server_config.xml");
 
             Element config = document.getDocumentElement();
             host = config.getElementsByTagName("host").item(0).getTextContent();
