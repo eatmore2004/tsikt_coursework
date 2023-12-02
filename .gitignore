@@ -13,6 +13,8 @@ target/
 *.ipr
 .idea
 .mvn
+mvnw.cmd
+mvnw
 
 ### Eclipse ###
 .apt_generated

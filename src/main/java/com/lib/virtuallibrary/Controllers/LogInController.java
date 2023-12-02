@@ -30,4 +30,6 @@ public class LogInController {
         SceneSwitcher sw = new SceneSwitcher();
         sw.switchScenes(logInAnchorPane, "registration.fxml");
     }
+
+
 }

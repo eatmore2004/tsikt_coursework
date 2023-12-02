@@ -9,7 +9,8 @@ import java.util.Objects;
 
 public class SceneSwitcher {
     public void switchScenes(AnchorPane currentAnchorPane, String newSceneFxmlPath) throws IOException {
-        AnchorPane newAnchorPane = FXMLLoader.load(Objects.requireNonNull(LibraryApplication.class.getResource(newSceneFxmlPath)));
+        AnchorPane newAnchorPane = FXMLLoader
+                .load(Objects.requireNonNull(LibraryApplication.class.getResource(newSceneFxmlPath)));
         currentAnchorPane.getChildren().removeAll();
         currentAnchorPane.getChildren().setAll(newAnchorPane);
     }
