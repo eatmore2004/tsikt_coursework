@@ -4,19 +4,17 @@ import BLL.*;
 import BLL_Abstractions.*;
 import Core.Models.*;
 import DAL.Repository.Repository;
-import com.lib.virtuallibrary.Models.SceneSwitcher;
+import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class RegistrationController {
@@ -48,14 +46,19 @@ public class RegistrationController {
     @FXML
     private Label infoLabel;
 
+    private final ViewChanger viewChanger;
+    private final MessageLabels messageLabel;
     private final IUserService userService;
+
     public RegistrationController() {
         IBookService bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
+        messageLabel = new MessageLabels();
+        viewChanger = new ViewChanger();
     }
 
     public void onSignInRedirectClick() throws IOException {
-        SceneSwitcher sw = new SceneSwitcher();
+        ViewChanger sw = new ViewChanger();
         sw.switchScenes(registrationAnchorPane, "log-in.fxml");
     }
 
@@ -69,11 +72,11 @@ public class RegistrationController {
         Result<UUID> userResult = userService
                 .registerUser(firstName, lastName, username, email, password);
         if (!userResult.getSuccess()) {
-            showUnsuccessfulMessage(userResult.getMessage());
+            messageLabel.showUnsuccessfulMessage(infoLabel, userResult.getMessage());
         }
         else {
             registerButton.setDisable(true);
-            showSuccessfulMessage(userResult.getMessage());
+            messageLabel.showSuccessfulMessage(infoLabel,"User was successfully added! Redirecting to sign in...");
             switchSceneToLogInWithDelay();
         }
     }
@@ -81,24 +84,13 @@ public class RegistrationController {
     private void switchSceneToLogInWithDelay() {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
-            SceneSwitcher sw = new SceneSwitcher();
             try {
-                sw.switchScenes(registrationAnchorPane, "log-in.fxml");
+                viewChanger.switchScenes(registrationAnchorPane, "log-in.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         pause.play();
-    }
-
-    private void showUnsuccessfulMessage(String message) {
-        infoLabel.setTextFill(Color.RED);
-        infoLabel.setText(message);
-    }
-
-    private void showSuccessfulMessage(String message) {
-        infoLabel.setTextFill(Color.valueOf("#007BFF"));
-        infoLabel.setText("User was successfully added! Redirecting to sign in.....");
     }
 }
 
