@@ -11,11 +11,16 @@ import DAL.Repository.Repository;
 import com.lib.virtuallibrary.Models.MessageLabels;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -50,11 +55,11 @@ public class LogInController {
     }
 
     public void onRegisterRedirectClick() throws IOException {
-        ViewChanger sw = new ViewChanger();
-        sw.switchScenes(logInAnchorPane, "registration.fxml");
+        viewChanger.switchScenes(logInAnchorPane, "registration.fxml");
     }
 
-    public void onSignInClick() throws IOException {
+    @FXML
+    public void onSignInClick(javafx.event.ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
 

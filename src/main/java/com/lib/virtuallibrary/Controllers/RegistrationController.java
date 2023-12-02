@@ -58,8 +58,7 @@ public class RegistrationController {
     }
 
     public void onSignInRedirectClick() throws IOException {
-        ViewChanger sw = new ViewChanger();
-        sw.switchScenes(registrationAnchorPane, "log-in.fxml");
+        viewChanger.switchScenes(registrationAnchorPane, "log-in.fxml");
     }
 
     public void onRegisterClick() {
