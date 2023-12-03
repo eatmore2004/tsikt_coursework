@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.UUID;
 
 public class AddBookController {
@@ -47,7 +46,7 @@ public class AddBookController {
     @FXML
     private Button addBookButton;
 
-    private IBookService bookService;
+    //private IBookService bookService;
 
     private final ViewChanger viewChanger;
 
@@ -56,7 +55,6 @@ public class AddBookController {
     public AddBookController() {
         viewChanger = new ViewChanger();
         messageLabels = new MessageLabels();
-        bookService = new BookService(new Repository(Book.class));
     }
 
     @FXML
@@ -69,17 +67,20 @@ public class AddBookController {
         String title = titleField.getText();
         String author = authorField.getText();
         String genre = genreField.getText();
+
+        // TODO - MUST BE CHANGED
         int year = 0;
         int pages = 0;
         try{
             year = Integer.parseInt(yearField.getText());
             pages = Integer.parseInt(pagesField.getText());
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+
         }
 
-        Result<UUID> bookResult = bookService
-                .addBook(title, genre, author, year, pages);
+        IBookService bookService = new BookService(new Repository(Book.class));
+
+        Result<UUID> bookResult = bookService.addBook(title, genre, author, year, pages);
 
         if (!bookResult.getSuccess()) {
             messageLabels.showUnsuccessfulMessage(infoLabel, bookResult.getMessage());
