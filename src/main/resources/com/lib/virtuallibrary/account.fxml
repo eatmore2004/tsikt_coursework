@@ -35,11 +35,12 @@
             <Image url="@../../../images/user-logo.png" />
          </image>
       </ImageView>
-      <Label fx:id="name" layoutX="130.0" layoutY="67.0" prefHeight="26.0" prefWidth="302.0">
+      <Label fx:id="nameLabel" layoutX="130.0" layoutY="67.0" prefHeight="26.0" prefWidth="302.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <Button fx:id="addBookRedirectButton" layoutX="631.0" layoutY="64.0" mnemonicParsing="false" onAction="#onAddBookRedirectClick" style="-fx-background-color: #007BFF;" text="Add book" textFill="WHITE" />
+      <Button fx:id="addUserButton" layoutX="556.0" layoutY="64.0" mnemonicParsing="false" onAction="#addUserClick" style="-fx-background-color: #007BFF;" text="Add user" textFill="WHITE" />
    </children>
 </AnchorPane>

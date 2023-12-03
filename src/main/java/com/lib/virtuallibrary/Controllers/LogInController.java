@@ -12,6 +12,7 @@ import com.lib.virtuallibrary.Models.MessageLabels;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +24,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class LogInController {
 
@@ -47,6 +50,8 @@ public class LogInController {
     private final ViewChanger viewChanger;
     private final MessageLabels messageLabel;
     private final IUserService userService;
+    private AccountController accountController;
+
     public LogInController() {
         IBookService bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
@@ -54,6 +59,7 @@ public class LogInController {
         viewChanger = new ViewChanger();
     }
 
+    @FXML
     public void onRegisterRedirectClick() throws IOException {
         viewChanger.switchScenes(logInAnchorPane, "registration.fxml");
     }
@@ -68,7 +74,7 @@ public class LogInController {
             messageLabel.showUnsuccessfulMessage(infoLabel, userResult.getMessage());
         }
         else {
-            viewChanger.switchScenes(logInAnchorPane, "sample.fxml");
+            viewChanger.switchScenesWithUserInformationToSample(logInAnchorPane, "sample.fxml", username);
         }
     }
 }

@@ -40,6 +40,8 @@ public class SampleController implements Initializable{
 
     private IBookService bookService;
 
+    private String username;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewChanger = new ViewChanger();
@@ -50,7 +52,7 @@ public class SampleController implements Initializable{
 
     @FXML
     private void onAccountRedirectClick(ActionEvent event) throws IOException {
-        viewChanger.switchScenes(sampleAnchorPane, "account.fxml");
+        viewChanger.switchScenesWithUserInformationToAccount(sampleAnchorPane, "account.fxml", username);
     }
 
     private void loadAllBooks() {
@@ -60,7 +62,7 @@ public class SampleController implements Initializable{
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/com/lib/virtuallibrary/book-card.fxml"));
-                    pageFlowPane.getChildren().add(fxmlLoader.load());
+                    pageVBox.getChildren().add(fxmlLoader.load());
                     BookCardController bookCardController = fxmlLoader.getController();
                     Result<Book> book = bookService.getByID(i.getId());
                     bookCardController.setBookInfo(book.getData());
@@ -69,5 +71,9 @@ public class SampleController implements Initializable{
                 }
             }
         }
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
