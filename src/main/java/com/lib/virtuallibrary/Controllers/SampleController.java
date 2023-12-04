@@ -5,8 +5,10 @@ import BLL_Abstractions.IBookService;
 import Core.Models.BaseEntity;
 import Core.Models.Book;
 import Core.Models.Result;
+import Core.Models.User;
 import DAL.Repository.Repository;
 import com.lib.virtuallibrary.LibraryApplication;
+import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,19 +42,20 @@ public class SampleController implements Initializable{
 
     private IBookService bookService;
 
-    private String username;
+    private User user;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewChanger = new ViewChanger();
         bookService = new BookService(new Repository(Book.class));
+        new Session();
 
         loadAllBooks();
     }
 
     @FXML
     private void onAccountRedirectClick(ActionEvent event) throws IOException {
-        viewChanger.switchScenesWithUserInformationToAccount(sampleAnchorPane, "account.fxml", username);
+        viewChanger.switchScenes(sampleAnchorPane, "account.fxml");
     }
 
     private void loadAllBooks() {
@@ -71,9 +74,5 @@ public class SampleController implements Initializable{
                 }
             }
         }
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

@@ -49,9 +49,10 @@ public class RegistrationController {
     private final ViewChanger viewChanger;
     private final MessageLabels messageLabel;
     private final IUserService userService;
+    private final IBookService bookService;
 
     public RegistrationController() {
-        IBookService bookService = new BookService(new Repository(Book.class));
+        bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
         messageLabel = new MessageLabels();
         viewChanger = new ViewChanger();

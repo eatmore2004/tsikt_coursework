@@ -1,5 +1,8 @@
 package com.lib.virtuallibrary.Controllers;
 
+import Core.Models.Result;
+import Core.Models.User;
+import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +24,7 @@ public class AccountController implements Initializable {
     private Button logOutRedirectButton;
 
     @FXML
-    private Button addUser;
+    private Button addUserButton;
 
     @FXML
     private Button backRedirectButton;
@@ -31,18 +34,30 @@ public class AccountController implements Initializable {
 
     private ViewChanger viewChanger;
 
-    private String username;
+    private User user;
 
     public AccountController() {
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewChanger = new ViewChanger();
+        addUserButton.setVisible(false);
+        addUserButton.setDisable(true);
+        new Session();
+        Result<User> result = Session.getUser();
+        if (result.getSuccess()) user = result.getData();
+        nameLabel.setText(user.getName() + " " + user.getSurname());
+
+        if (user.getUsername().equals("admin")) {
+            addUserButton.setVisible(true);
+            addUserButton.setDisable(false);
+        }
     }
     @FXML
     void onBackRedirectClick(ActionEvent event) throws IOException {
-        viewChanger.switchScenesWithUserInformationToSample(accountAnchorPane, "sample.fxml", username);
+        viewChanger.switchScenes(accountAnchorPane, "sample.fxml");
     }
 
     @FXML
@@ -55,11 +70,7 @@ public class AccountController implements Initializable {
         viewChanger.switchScenes(accountAnchorPane, "add-book.fxml");
     }
 
-    public void setNameLabel(String name) {
-        nameLabel.setText(name);
-    }
-
-    public void addUserClick(ActionEvent actionEvent) {
-
+    public void addUserClick(ActionEvent actionEvent) throws IOException {
+        viewChanger.switchScenes(accountAnchorPane, "add-user.fxml");
     }
 }

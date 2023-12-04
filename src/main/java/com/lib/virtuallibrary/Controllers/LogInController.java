@@ -9,6 +9,7 @@ import Core.Models.Result;
 import Core.Models.User;
 import DAL.Repository.Repository;
 import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +75,9 @@ public class LogInController {
             messageLabel.showUnsuccessfulMessage(infoLabel, userResult.getMessage());
         }
         else {
-            viewChanger.switchScenesWithUserInformationToSample(logInAnchorPane, "sample.fxml", username);
+            new Session();
+            Session.login(userResult.getData().getId());
+            viewChanger.switchScenes(logInAnchorPane, "sample.fxml");
         }
     }
 }
