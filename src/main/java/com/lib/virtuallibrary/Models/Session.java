@@ -25,7 +25,7 @@ public class Session {
     }
 
     public static Result<User> getUser() {
-        if (user == null) return new Result<>("User logouted",false);
+        if (user == null) return new Result<>("User logged out.",false);
         return new Result<>(user,true);
     }
 
@@ -37,7 +37,7 @@ public class Session {
         Result<User> result_user = userService.getByID(uuid);
         if (result_user.getSuccess()){
             user = result_user.getData();
-        }else throw new IllegalArgumentException();
+        } else throw new IllegalArgumentException();
     }
 
 }

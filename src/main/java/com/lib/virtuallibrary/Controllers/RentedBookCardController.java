@@ -9,13 +9,14 @@ import Core.Models.Result;
 import Core.Models.User;
 import DAL.Repository.Repository;
 import com.lib.virtuallibrary.Models.Session;
+import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import java.util.Date;
 
-public class BookCardController {
+public class RentedBookCardController {
 
     @FXML
     private Label authorLabel;
@@ -27,10 +28,7 @@ public class BookCardController {
     private Label pagesLabel;
 
     @FXML
-    private Button rentThisBookButton;
-
-    @FXML
-    private Label rentedByLabel;
+    private Button returnBookButton;
 
     @FXML
     private Label rentedAtLabel;
@@ -46,7 +44,7 @@ public class BookCardController {
     private final User user;
     private Book book;
 
-    public BookCardController() {
+    public RentedBookCardController() {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
         new Session();
@@ -54,26 +52,20 @@ public class BookCardController {
     }
 
     @FXML
-    void onRentThisBookClick(ActionEvent event) {
-        rentThisBookButton.setDisable(true);
-        rentedByLabel.setText(user.getEmail());
-        rentedAtLabel.setText(new Date().toString());
-
-        bookService.rentBook(book.getTitle(), user.getId());
+    private void onReturnBookClick(ActionEvent event) {
+        // TODO - Add result from return book!
+        returnBookButton.setDisable(true);
+        returnBookButton.setText("Book returned");
+        bookService.returnBook(book.getId(), user.getId());
     }
 
-    public void setBookCardInfo(Book book) {
+    public void setRentedBookCardInfo(Book book) {
         this.book = book;
         titleLabel.setText(book.getTitle());
         authorLabel.setText(book.getAuthor());
         genreLabel.setText(book.getGenre());
         pagesLabel.setText(Integer.toString(book.getPages()));
         yearLabel.setText(Integer.toString(book.getYear()));
-        if (book.getRentedBy() != null && book.getRentedAt() != null) {
-            rentThisBookButton.setDisable(true);
-            Result<User> user = userService.getByID(book.getRentedBy());
-            rentedByLabel.setText(user.getData().getEmail());
-            rentedAtLabel.setText(book.getRentedAt());
-        }
+        rentedAtLabel.setText(book.getRentedAt());
     }
 }

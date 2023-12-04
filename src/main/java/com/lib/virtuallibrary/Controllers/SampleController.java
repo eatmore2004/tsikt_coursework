@@ -64,11 +64,11 @@ public class SampleController implements Initializable{
             for (var i : allBooks.getData()) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getResource("/com/lib/virtuallibrary/book-card.fxml"));
+                    fxmlLoader.setLocation(LibraryApplication.class.getResource("book-card.fxml"));
                     pageVBox.getChildren().add(fxmlLoader.load());
                     BookCardController bookCardController = fxmlLoader.getController();
                     Result<Book> book = bookService.getByID(i.getId());
-                    bookCardController.setBookInfo(book.getData());
+                    bookCardController.setBookCardInfo(book.getData());
                 } catch (IOException e){
                     e.printStackTrace();
                 }
