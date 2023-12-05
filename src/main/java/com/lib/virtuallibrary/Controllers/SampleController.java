@@ -73,11 +73,16 @@ public class SampleController implements Initializable{
     @FXML
     private void onSearchClick() {
         if (!searchField.getText().isEmpty()) {
+            removeAllBooksFromScreen();
             List<Book> searchedBooks = getBooksBySearch();
             if (searchedBooks != null) {
                 displayBooksOnScreen(searchedBooks);
+            } else {
+                removeAllBooksFromScreen();
+                loadAllBooks();
             }
-        } else {
+        } else { // TODO - Change logic of this 2 else
+            removeAllBooksFromScreen();
             loadAllBooks();
         }
         searchField.setText("");
