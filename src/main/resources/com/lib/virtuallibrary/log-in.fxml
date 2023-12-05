@@ -19,8 +19,8 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <TextField fx:id="usernameField" layoutX="289.0" layoutY="282.0" prefHeight="26.0" prefWidth="222.0" promptText="Username" />
-      <PasswordField fx:id="passwordField" layoutX="289.0" layoutY="317.0" prefHeight="26.0" prefWidth="222.0" promptText="Password" />
+      <TextField fx:id="usernameField" focusTraversable="false" layoutX="289.0" layoutY="282.0" prefHeight="26.0" prefWidth="222.0" promptText="Username" />
+      <PasswordField fx:id="passwordField" focusTraversable="false" layoutX="289.0" layoutY="317.0" prefHeight="26.0" prefWidth="222.0" promptText="Password" />
       <Button fx:id="signInButton" layoutX="289.0" layoutY="359.0" mnemonicParsing="false" onAction="#onSignInClick" prefHeight="26.0" prefWidth="222.0" style="-fx-background-color: #007BFF;" text="Sign in" textFill="WHITE" />
       <Label layoutX="296.0" layoutY="403.0" text="Don't have an account yet?" />
       <Button fx:id="registerRedirectButton" layoutX="447.0" layoutY="399.0" mnemonicParsing="false" onAction="#onRegisterRedirectClick" style="-fx-background-color: transparent;" text="Register" textFill="#007bff" />

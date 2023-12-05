@@ -81,6 +81,7 @@ public class RegistrationController {
         }
     }
 
+    // TODO - Pass this method on to ViewChanger
     private void switchSceneToLogInWithDelay() {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {

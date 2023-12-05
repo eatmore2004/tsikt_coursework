@@ -56,5 +56,10 @@
       </ScrollPane>
       <Button fx:id="returnAllBooksButton" layoutX="597.0" layoutY="104.0" mnemonicParsing="false" onAction="#onReturnAllBooksClick" style="-fx-background-color: #007BFF;" text="Return all books" textFill="WHITE" />
       <Label fx:id="infoLabel" layoutX="97.0" layoutY="40.0" prefHeight="18.0" prefWidth="600.0" />
+      <Label fx:id="noBooksFoundLabel" layoutX="243.0" layoutY="105.0" prefHeight="26.0" prefWidth="349.0" textFill="#007bff">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

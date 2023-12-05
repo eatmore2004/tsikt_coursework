@@ -43,7 +43,13 @@ public class AccountController implements Initializable {
     private Button backRedirectButton;
 
     @FXML
+    private Button returnAllBooksButton;
+
+    @FXML
     private Label nameLabel;
+
+    @FXML
+    private Label noBooksFoundLabel;
 
     @FXML
     private VBox yourBooksVBox;
@@ -99,6 +105,16 @@ public class AccountController implements Initializable {
         viewChanger.switchScenes(accountAnchorPane, "add-book.fxml");
     }
 
+    @FXML
+    private void onReturnAllBooksClick() throws IOException {
+        Result<String> bookResult = bookService.returnAllByOwner(user.getId());
+        if (!bookResult.getSuccess()) {
+            messageLabel.showUnsuccessfulMessage(infoLabel, bookResult.getMessage());
+        } else {
+            viewChanger.switchScenes(accountAnchorPane, "account.fxml");
+        }
+    }
+
     public void addUserClick(ActionEvent actionEvent) throws IOException {
         viewChanger.switchScenes(accountAnchorPane, "add-user.fxml");
     }
@@ -123,34 +139,31 @@ public class AccountController implements Initializable {
 
     private void loadRentedBooks() {
         Result<List<Book>> rentedBooks = bookService.getAllByOwner(user.getId());
-        if (rentedBooks.getSuccess()) {
-            for (var i : rentedBooks.getData()) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(LibraryApplication.class.getResource("rented-book-card.fxml"));
-                    yourBooksVBox.getChildren().add(fxmlLoader.load());
-                    RentedBookCardController rentedBookCardController = fxmlLoader.getController();
-                    Result<Book> book = bookService.getByID(i.getId());
-                    rentedBookCardController.setRentedBookCardInfo(book.getData());
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @FXML
-    private void onReturnAllBooksClick() throws IOException {
-        Result<String> bookResult = bookService.returnAllByOwner(user.getId());
-        if (!bookResult.getSuccess()) {
-            messageLabel.showUnsuccessfulMessage(infoLabel, bookResult.getMessage());
+        if (!rentedBooks.getData().isEmpty()) {
+            showRentedBooks(rentedBooks);
         } else {
-            viewChanger.switchScenes(accountAnchorPane, "account.fxml");
+            returnAllBooksButton.setDisable(true);
+            noBooksFoundLabel.setText("It looks like you haven't rented any books yet.");
         }
     }
 
     private void hideScrollBar() {
         yourBooksScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         yourBooksScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    private void showRentedBooks(Result<List<Book>> rentedBooks) {
+        for (var i : rentedBooks.getData()) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(LibraryApplication.class.getResource("rented-book-card.fxml"));
+                yourBooksVBox.getChildren().add(fxmlLoader.load());
+                RentedBookCardController rentedBookCardController = fxmlLoader.getController();
+                Result<Book> book = bookService.getByID(i.getId());
+                rentedBookCardController.setRentedBookCardInfo(book.getData());
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
