@@ -39,8 +39,8 @@ public class RentedBookCardController {
     @FXML
     private Label yearLabel;
 
-    private IBookService bookService;
-    private IUserService userService;
+    private final IBookService bookService;
+    private final IUserService userService;
     private final User user;
     private Book book;
 
@@ -53,7 +53,6 @@ public class RentedBookCardController {
 
     @FXML
     private void onReturnBookClick(ActionEvent event) {
-        // TODO - Add result from return book!
         returnBookButton.setDisable(true);
         returnBookButton.setText("Book returned");
         bookService.returnBook(book.getId(), user.getId());

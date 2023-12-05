@@ -3,8 +3,8 @@ package com.lib.virtuallibrary.Models;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
-public class MessageLabels {
-    public MessageLabels() {
+public class MessageLabel {
+    public MessageLabel() {
 
     }
 

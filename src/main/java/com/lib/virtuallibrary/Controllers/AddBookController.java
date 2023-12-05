@@ -5,7 +5,7 @@ import BLL_Abstractions.IBookService;
 import Core.Models.Book;
 import Core.Models.Result;
 import DAL.Repository.Repository;
-import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.MessageLabel;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,15 +46,16 @@ public class AddBookController {
     @FXML
     private Button addBookButton;
 
-    //private IBookService bookService;
+    private IBookService bookService;
 
     private final ViewChanger viewChanger;
 
-    private final MessageLabels messageLabels;
+    private final MessageLabel messageLabel;
 
     public AddBookController() {
         viewChanger = new ViewChanger();
-        messageLabels = new MessageLabels();
+        messageLabel = new MessageLabel();
+        bookService = new BookService(new Repository(Book.class));
     }
 
     @FXML
@@ -67,26 +68,24 @@ public class AddBookController {
         String title = titleField.getText();
         String author = authorField.getText();
         String genre = genreField.getText();
-
-        // TODO - MUST BE CHANGED
-        int year = 0;
-        int pages = 0;
-        try{
-            year = Integer.parseInt(yearField.getText());
-            pages = Integer.parseInt(pagesField.getText());
-        } catch (NumberFormatException e) {
-
-        }
-
-        IBookService bookService = new BookService(new Repository(Book.class));
+        int year = tryParseInt(yearField.getText(), 0);
+        int pages = tryParseInt(pagesField.getText(), 0);
 
         Result<UUID> bookResult = bookService.addBook(title, genre, author, year, pages);
 
         if (!bookResult.getSuccess()) {
-            messageLabels.showUnsuccessfulMessage(infoLabel, bookResult.getMessage());
+            messageLabel.showUnsuccessfulMessage(infoLabel, bookResult.getMessage());
         }
         else {
-            messageLabels.showSuccessfulMessage(infoLabel, "Book was successfully added!");
+            messageLabel.showSuccessfulMessage(infoLabel, "Book was successfully added!");
+        }
+    }
+
+    public int tryParseInt(String value, int defaultVal) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return defaultVal;
         }
     }
 }

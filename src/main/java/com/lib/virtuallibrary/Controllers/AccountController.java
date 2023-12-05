@@ -4,13 +4,12 @@ import BLL.BookService;
 import BLL.UserService;
 import BLL_Abstractions.IBookService;
 import BLL_Abstractions.IUserService;
-import Core.Models.BaseEntity;
 import Core.Models.Book;
 import Core.Models.Result;
 import Core.Models.User;
 import DAL.Repository.Repository;
 import com.lib.virtuallibrary.LibraryApplication;
-import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.MessageLabel;
 import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
@@ -69,7 +68,7 @@ public class AccountController implements Initializable {
 
     private ViewChanger viewChanger;
 
-    private MessageLabels messageLabel;
+    private MessageLabel messageLabel;
 
     private User user;
 
@@ -81,7 +80,7 @@ public class AccountController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
-        messageLabel = new MessageLabels();
+        messageLabel = new MessageLabel();
         viewChanger = new ViewChanger();
         new Session();
         hideScrollBar();

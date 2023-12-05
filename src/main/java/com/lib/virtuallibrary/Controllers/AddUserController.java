@@ -8,7 +8,7 @@ import Core.Models.Book;
 import Core.Models.Result;
 import Core.Models.User;
 import DAL.Repository.Repository;
-import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.MessageLabel;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,13 +52,13 @@ public class AddUserController {
     private IBookService bookService;
     private IUserService userService;
     private ViewChanger viewChanger;
-    private MessageLabels messageLabel;
+    private MessageLabel messageLabel;
 
     public AddUserController() {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
         viewChanger = new ViewChanger();
-        messageLabel = new MessageLabels();
+        messageLabel = new MessageLabel();
     }
 
     @FXML

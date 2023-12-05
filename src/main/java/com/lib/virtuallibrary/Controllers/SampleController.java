@@ -8,7 +8,6 @@ import Core.Models.Result;
 import Core.Models.User;
 import DAL.Repository.Repository;
 import com.lib.virtuallibrary.LibraryApplication;
-import com.lib.virtuallibrary.Models.MessageLabels;
 import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.MessageDigest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,8 +47,6 @@ public class SampleController implements Initializable{
 
     private ViewChanger viewChanger;
 
-    private MessageLabels messageLabel;
-
     private IBookService bookService;
 
     private User user;
@@ -58,7 +54,6 @@ public class SampleController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewChanger = new ViewChanger();
-        messageLabel = new MessageLabels();
         bookService = new BookService(new Repository(Book.class));
         new Session();
 
@@ -72,16 +67,11 @@ public class SampleController implements Initializable{
 
     @FXML
     private void onSearchClick() {
-        if (!searchField.getText().isEmpty()) {
-            removeAllBooksFromScreen();
-            List<Book> searchedBooks = getBooksBySearch();
-            if (searchedBooks != null) {
-                displayBooksOnScreen(searchedBooks);
-            } else {
-                removeAllBooksFromScreen();
-                loadAllBooks();
-            }
-        } else { // TODO - Change logic of this 2 else
+        removeAllBooksFromScreen();
+        List<Book> searchedBooks = getBooksBySearch();
+        if (searchedBooks != null) {
+            displayBooksOnScreen(searchedBooks);
+        } else {
             removeAllBooksFromScreen();
             loadAllBooks();
         }

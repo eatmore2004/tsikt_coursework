@@ -4,15 +4,13 @@ import BLL.*;
 import BLL_Abstractions.*;
 import Core.Models.*;
 import DAL.Repository.Repository;
-import com.lib.virtuallibrary.Models.MessageLabels;
+import com.lib.virtuallibrary.Models.MessageLabel;
 import com.lib.virtuallibrary.Models.ViewChanger;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -47,14 +45,14 @@ public class RegistrationController {
     private Label infoLabel;
 
     private final ViewChanger viewChanger;
-    private final MessageLabels messageLabel;
+    private final MessageLabel messageLabel;
     private final IUserService userService;
     private final IBookService bookService;
 
     public RegistrationController() {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
-        messageLabel = new MessageLabels();
+        messageLabel = new MessageLabel();
         viewChanger = new ViewChanger();
     }
 
@@ -77,21 +75,8 @@ public class RegistrationController {
         else {
             registerButton.setDisable(true);
             messageLabel.showSuccessfulMessage(infoLabel,"User was successfully added! Redirecting to sign in...");
-            switchSceneToLogInWithDelay();
+            viewChanger.switchSceneWithDelay(registrationAnchorPane, "log-in.fxml", 2);
         }
-    }
-
-    // TODO - Pass this method on to ViewChanger
-    private void switchSceneToLogInWithDelay() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> {
-            try {
-                viewChanger.switchScenes(registrationAnchorPane, "log-in.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        pause.play();
     }
 }
 
