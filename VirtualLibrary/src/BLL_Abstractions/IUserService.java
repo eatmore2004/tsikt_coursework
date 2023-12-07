@@ -114,4 +114,6 @@ public interface IUserService extends IGenericService{
      * @return Result<String> - message
      */
     Result<String> deleteUser(UUID userId);
+
+    Result<User> getByUsername(String username);
 }
