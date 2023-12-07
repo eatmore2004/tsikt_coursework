@@ -2,8 +2,9 @@
  * Created by Andrii Yeremenko on 12/1/23.
  */
 
-package BLL;
+package test.java.BLL;
 
+import BLL.BookService;
 import Core.Models.Book;
 import Core.Models.Result;
 import DAL.Repository.Repository;

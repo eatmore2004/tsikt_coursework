@@ -2,8 +2,10 @@
  * Created by Andrii Yeremenko on 01/12/2023
  */
 
-package BLL;
+package test.java.BLL;
 
+import BLL.BookService;
+import BLL.UserService;
 import Core.Models.Book;
 import Core.Models.Result;
 import Core.Models.User;

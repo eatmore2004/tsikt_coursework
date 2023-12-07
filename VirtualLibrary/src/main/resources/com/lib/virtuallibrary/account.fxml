@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="accountAnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.AccountController">
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: #6C757D;">
+        <items>
+            <Button fx:id="backRedirectButton" mnemonicParsing="false" onAction="#onBackRedirectClick" style="-fx-background-color: #007BFF;" text="&lt; Back" textFill="WHITE" />
+            <Label prefHeight="18.0" prefWidth="258.0" />
+            <ImageView fitHeight="24.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/logo.png" />
+               </image>
+            </ImageView>
+            <Label text="VirtualLibrary" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="18.0" prefWidth="277.0" />
+            <Button fx:id="logOutRedirectButton" mnemonicParsing="false" onAction="#onLogOutRedirectClick" style="-fx-background-color: #007BFF;" text="Log out" textFill="WHITE" />
+        </items>
+      </ToolBar>
+      <Separator layoutX="100.0" layoutY="94.0" prefHeight="9.0" prefWidth="600.0" />
+      <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="100.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/user-logo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nameLabel" layoutX="130.0" layoutY="67.0" prefHeight="26.0" prefWidth="302.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="addBookRedirectButton" layoutX="631.0" layoutY="64.0" mnemonicParsing="false" onAction="#onAddBookRedirectClick" style="-fx-background-color: #007BFF;" text="Add book" textFill="WHITE" />
+      <Button fx:id="addUserButton" layoutX="556.0" layoutY="64.0" mnemonicParsing="false" onAction="#addUserClick" style="-fx-background-color: #007BFF;" text="Add user" textFill="WHITE" />
+      <Label fx:id="yourRentedBooksLabel" layoutX="100.0" layoutY="104.0" text="Your rented books:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="yourBooksScrollPane" layoutX="100.0" layoutY="136.0" prefHeight="464.0" prefWidth="617.0" style="-fx-background-color: transparent;">
+         <content>
+            <VBox fx:id="yourBooksVBox" prefHeight="463.0" prefWidth="584.0" style="-fx-spacing: 10;" />
+         </content>
+      </ScrollPane>
+      <Button fx:id="returnAllBooksButton" layoutX="597.0" layoutY="104.0" mnemonicParsing="false" onAction="#onReturnAllBooksClick" style="-fx-background-color: #007BFF;" text="Return all books" textFill="WHITE" />
+      <Label fx:id="infoLabel" layoutX="97.0" layoutY="40.0" prefHeight="18.0" prefWidth="600.0" />
+      <Label fx:id="noBooksFoundLabel" layoutX="243.0" layoutY="105.0" prefHeight="26.0" prefWidth="349.0" textFill="#007bff">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
