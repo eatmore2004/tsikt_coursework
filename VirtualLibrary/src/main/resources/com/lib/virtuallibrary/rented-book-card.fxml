@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="123.0" prefWidth="600.0" style="-fx-background-color: #6C757D; -fx-background-radius: 12; -fx-border-insets: 20 0 0 0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.RentedBookCardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="123.0" prefWidth="600.0" style="-fx-background-color: #6C757D; -fx-background-radius: 12; -fx-border-insets: 20 0 0 0;" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.RentedBookCardController">
    <children>
       <Label fx:id="titleLabel" layoutX="19.0" layoutY="13.0" prefHeight="27.0" prefWidth="463.0" textFill="WHITE">
          <font>

@@ -97,8 +97,13 @@ public class BookService extends GenericService implements IBookService{
 
     @Override
     public Result<List<Book>> getAllByOwner(UUID ownerId) {
-        Result<List<BaseEntity>> result = GetAll();
-        return getAllByPredicate(x -> x.getRentedBy().equals(ownerId));
+        if (ownerId == null) return new Result<>("Invalid input", false);
+        Result<List<Book>> result = getAllTaken();
+        if (!result.getSuccess()) return new Result<>(result.getMessage(), false);
+        List<Book> books = result.getData().stream().map(x -> (Book) x)
+                .filter(x -> x.getRentedBy().equals(ownerId)).collect(Collectors.toList());
+
+        return new Result<>(books, true);
     }
 
     @Override
