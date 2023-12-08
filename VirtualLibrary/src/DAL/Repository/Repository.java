@@ -87,7 +87,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
     public Result<ResultSet> Update(T item) {
         Field[] fields = clazz.getDeclaredFields();
         StringBuilder rows = new StringBuilder();
-        StringBuilder strId = new StringBuilder("[id] = '");
+        StringBuilder strId = new StringBuilder("id = '");
         try {
             Field id = clazz.getSuperclass().getDeclaredField("id");
             id.setAccessible(true);
@@ -99,7 +99,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         for (Field field : fields) {
             field.setAccessible(true);
             String fieldName = field.getName();
-            rows.append("[").append(fieldName).append("] = '");
+            rows.append(fieldName).append(" = '");
             try {
                 rows.append(field.get(item)).append("', ");
             } catch (IllegalAccessException e) {
@@ -124,7 +124,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 
         try {
             Field id = clazz.getSuperclass().getDeclaredField("id");
-            columns.append("[").append("id").append("], ");
+            columns.append("id").append(", ");
             id.setAccessible(true);
             values.append("'").append(id.get(item)).append("', ");
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -134,7 +134,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         for (Field field : fields) {
             field.setAccessible(true);
             String fieldName = field.getName();
-            columns.append("[").append(fieldName).append("], ");
+            columns.append(fieldName).append(", ");
             try {
                 values.append("'").append(field.get(item)).append("', ");
             } catch (IllegalAccessException e) {

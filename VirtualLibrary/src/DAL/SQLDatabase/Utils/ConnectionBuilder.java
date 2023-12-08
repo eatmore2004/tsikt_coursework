@@ -20,7 +20,7 @@ public class ConnectionBuilder {
      * @return String url
      */
     public String getUrl(){
-        return String.format("jdbc:sqlserver://%s:%d;databaseName=%s;encrypt=true;trustServerCertificate=true",
+        return String.format("jdbc:mysql://%s:%d/%s?encrypt=true&trustServerCertificate=true",
                 configReader.getHost(),
                 configReader.getPort(),
                 configReader.getDatabaseName());
