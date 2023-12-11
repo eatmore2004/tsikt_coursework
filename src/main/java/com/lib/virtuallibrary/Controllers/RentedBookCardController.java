@@ -1,3 +1,6 @@
+/**
+ * Created by Ihor Rohatiuk on 12/5/23.
+ */
 package com.lib.virtuallibrary.Controllers;
 
 import BLL.BookService;
@@ -16,6 +19,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import java.util.Date;
 
+/**
+ * RentedBookCardController class. Using to work with rented-book-card.fxml
+ */
 public class RentedBookCardController {
 
     @FXML
@@ -38,12 +44,14 @@ public class RentedBookCardController {
 
     @FXML
     private Label yearLabel;
-
     private final IBookService bookService;
     private final IUserService userService;
     private final User user;
     private Book book;
 
+    /**
+     * RentedBookCardController constructor. Using to define services which will be used after initialization
+     */
     public RentedBookCardController() {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
@@ -51,6 +59,11 @@ public class RentedBookCardController {
         user = Session.getUser().getData();
     }
 
+    /**
+     * onReturnBookClick method. Using to return book which was rented by user
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *    after returnBookButton was pressed
+     */
     @FXML
     private void onReturnBookClick(ActionEvent event) {
         returnBookButton.setDisable(true);
@@ -58,6 +71,10 @@ public class RentedBookCardController {
         bookService.returnBook(book.getId(), user.getId());
     }
 
+    /**
+     * setRentedBookCardInfo method. Using to set book information into a rented-book-card.fxml
+     * @param book using to specify which book information should be shown in a book-card
+     */
     public void setRentedBookCardInfo(Book book) {
         this.book = book;
         titleLabel.setText(book.getTitle());

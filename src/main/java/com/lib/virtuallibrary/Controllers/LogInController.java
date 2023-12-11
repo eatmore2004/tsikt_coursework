@@ -11,6 +11,7 @@ import DAL.Repository.Repository;
 import com.lib.virtuallibrary.Models.MessageLabel;
 import com.lib.virtuallibrary.Models.Session;
 import com.lib.virtuallibrary.Models.ViewChanger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +21,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * LogInController class. Using to work with log-in.fxml
+ */
 public class LogInController {
 
     @FXML
@@ -45,6 +49,9 @@ public class LogInController {
     private final IUserService userService;
     private AccountController accountController;
 
+    /**
+     * LogInController constructor. Using to define services which will be used after initialization
+     */
     public LogInController() {
         IBookService bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
@@ -52,13 +59,25 @@ public class LogInController {
         viewChanger = new ViewChanger();
     }
 
+    /**
+     * onRegisterRedirectClick method. Using to switch scene to registration.fxml
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *     after registerRedirectButton was pressed
+     * @throws IOException
+     */
     @FXML
-    public void onRegisterRedirectClick() throws IOException {
+    public void onRegisterRedirectClick(ActionEvent event) throws IOException {
         viewChanger.switchScenes(logInAnchorPane, "registration.fxml");
     }
 
+    /**
+     * onSignInClick method. Using to sign in user and switch to sample.fxml
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *  after signInButton was pressed
+     * @throws IOException
+     */
     @FXML
-    public void onSignInClick(javafx.event.ActionEvent event) throws IOException {
+    public void onSignInClick(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
 

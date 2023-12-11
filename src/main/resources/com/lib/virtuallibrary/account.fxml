@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="accountAnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.AccountController">
+<AnchorPane fx:id="accountAnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.AccountController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: #6C757D;">
         <items>
@@ -61,5 +61,12 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Button fx:id="refreshButton" layoutX="64.0" layoutY="99.0" mnemonicParsing="false" onAction="#onRefreshClick" prefHeight="34.0" prefWidth="24.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="20.0">
+               <Image url="@../../../images/refresh-icon.png" />
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

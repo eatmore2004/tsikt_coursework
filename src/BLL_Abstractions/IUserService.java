@@ -22,6 +22,13 @@ public interface IUserService extends IGenericService{
     Result<User> getByID(UUID id);
 
     /**
+     * Method to get user by its username
+     * @param username
+     * @return Result<User> - user
+     */
+    Result<User> getByUsername(String username);
+
+    /**
      * Method to get all users
      * @return Result<List<BaseEntity>>
      */

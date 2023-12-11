@@ -47,6 +47,21 @@ public class UserService extends GenericService implements IUserService {
     }
 
     @Override
+    public Result<User> getByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            return new Result<>("First name cannot be empty", false);
+        }
+        Result<List<User>> result = getAllByPredicate(x -> x.getUsername().equals(username));
+
+        if (result.getSuccess()) {
+            return new Result<>(result.getData().get(0), true);
+        } else {
+            return new Result<>(result.getMessage(), false);
+        }
+
+    }
+
+    @Override
     public Result<List<BaseEntity>> getAll() {
         return GetAll();
     }

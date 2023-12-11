@@ -1,3 +1,6 @@
+/**
+ * Created by Ihor Rohatiuk on 12/5/23.
+ */
 package com.lib.virtuallibrary.Controllers;
 
 import BLL.BookService;
@@ -25,6 +28,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ *  SampleController class. Using to work with sample.fxml
+ */
 public class SampleController implements Initializable{
 
     @FXML
@@ -51,6 +57,11 @@ public class SampleController implements Initializable{
 
     private User user;
 
+    /**
+     * initialize method. Using to initialize objects in SampleController after sample.fxml was loaded
+     * @param url address of fxml file, which initialize the controller
+     * @param resourceBundle data which can be used by application
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewChanger = new ViewChanger();
@@ -60,13 +71,24 @@ public class SampleController implements Initializable{
         loadAllBooks();
     }
 
+    /**
+     * onAccountRedirectClick method. Using to switch scene to account.fxml
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *    after accountRedirectButton was pressed
+     * @throws IOException
+     */
     @FXML
     private void onAccountRedirectClick(ActionEvent event) throws IOException {
         viewChanger.switchScenes(sampleAnchorPane, "account.fxml");
     }
 
+    /**
+     * onSearchClick method. Using to show books which were found after searchButton was pressed
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *   after backRedirectButton was pressed
+     */
     @FXML
-    private void onSearchClick() {
+    private void onSearchClick(ActionEvent event) {
         removeAllBooksFromScreen();
         List<Book> searchedBooks = getBooksBySearch();
         if (searchedBooks != null) {
@@ -78,6 +100,9 @@ public class SampleController implements Initializable{
         searchField.setText("");
     }
 
+    /**
+     * loadAllBooks method. Using to load books from database
+     */
     private void loadAllBooks() {
         Result<List<BaseEntity>> allBooks = bookService.getAll();
         if (allBooks.getSuccess()) {
@@ -85,6 +110,10 @@ public class SampleController implements Initializable{
         }
     }
 
+    /**
+     * getBooksBySearch method. Using to find books from user input
+     * @return List<Book> if books were found and null if not
+     */
     private List<Book> getBooksBySearch() {
         Result<List<Book>> searchedBooks = bookService.getAllByTitle(searchField.getText());
         if (!searchedBooks.getSuccess()) {
@@ -96,6 +125,10 @@ public class SampleController implements Initializable{
         return searchedBooks.getData();
     }
 
+    /**
+     * displayBooksOnScreen method. Using to display books
+     * @param books using to specify which books should be displayed
+     */
     private void displayBooksOnScreen(List<? extends BaseEntity> books) {
         for (var i : books) {
             try {
@@ -111,6 +144,9 @@ public class SampleController implements Initializable{
         }
     }
 
+    /**
+     * removeAllBooksFromScreen method. Using to remove all books from the screen
+     */
     private void removeAllBooksFromScreen() {
         pageVBox.getChildren().clear();
     }

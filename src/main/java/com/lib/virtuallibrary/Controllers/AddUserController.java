@@ -1,3 +1,6 @@
+/**
+ * Created by Ihor Rohatiuk on 12/5/23.
+ */
 package com.lib.virtuallibrary.Controllers;
 
 import BLL.BookService;
@@ -20,6 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ *  AddUserController class. Using to work with add-user.fxml
+ */
 public class AddUserController {
 
     @FXML
@@ -54,6 +60,9 @@ public class AddUserController {
     private ViewChanger viewChanger;
     private MessageLabel messageLabel;
 
+    /**
+     *  AddUserController constructor. Using to define services which will be used after initialization
+     */
     public AddUserController() {
         bookService = new BookService(new Repository(Book.class));
         userService = new UserService(new Repository(User.class), bookService);
@@ -61,6 +70,11 @@ public class AddUserController {
         messageLabel = new MessageLabel();
     }
 
+    /**
+     * onAddUserClick method. Using to add a new user to database
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *      *     after addUserButton was pressed
+     */
     @FXML
     void onAddUserClick(ActionEvent event) {
         String firstName = firstNameField.getText();
@@ -79,6 +93,12 @@ public class AddUserController {
         }
     }
 
+    /**
+     * onBackRedirectClick method. Using to switch scene to account.fxml
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *      after backRedirectButton was pressed
+     * @throws IOException
+     */
     @FXML
     void onBackRedirectClick(ActionEvent event) throws IOException {
         viewChanger.switchScenes(addUserAnchorPain, "account.fxml");

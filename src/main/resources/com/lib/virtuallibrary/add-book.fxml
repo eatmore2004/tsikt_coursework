@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="addBookAnchorPain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.AddBookController">
+<AnchorPane fx:id="addBookAnchorPain" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lib.virtuallibrary.Controllers.AddBookController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: #6C757D;">
         <items>
@@ -33,7 +33,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="327.0" layoutY="116.0" text="Add a new book:">
+      <Label layoutX="146.0" layoutY="115.0" text="Add a new book:">
          <font>
             <Font size="20.0" />
          </font>
@@ -74,5 +74,11 @@
          </font>
       </Button>
       <Label fx:id="infoLabel" layoutX="14.0" layoutY="569.0" prefHeight="18.0" prefWidth="759.0" />
+      <TextField fx:id="usernameField" layoutX="490.0" layoutY="117.0" prefHeight="26.0" prefWidth="167.0" promptText="username" visible="false" />
+      <Label fx:id="toUserLabel" layoutX="431.0" layoutY="117.0" text="to user:" visible="false">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
