@@ -14,14 +14,19 @@ import DAL.Repository.Repository;
 import com.lib.virtuallibrary.Models.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import java.net.URL;
 import java.util.Date;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * BookCardController class. Using to work with book-card.fxml
  */
-public class BookCardController {
+public class BookCardController implements Initializable {
 
     @FXML
     private Label authorLabel;
@@ -34,6 +39,12 @@ public class BookCardController {
 
     @FXML
     private Button rentThisBookButton;
+
+    @FXML
+    private Button returnBookButton;
+
+    @FXML
+    private Button deleteBookButton;
 
     @FXML
     private Label rentedByLabel;
@@ -62,6 +73,12 @@ public class BookCardController {
         user = Session.getUser().getData();
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        disableAdminPanel();
+        showAdminPanelIfAdmin();
+    }
+
     /**
      * onRentThisBookClick method. Using to rent book by user
      * @param event is an object of class ActionEvent. Using to describe some event
@@ -74,6 +91,37 @@ public class BookCardController {
         rentedAtLabel.setText(new Date().toString());
 
         bookService.rentBook(book.getTitle(), user.getId());
+    }
+
+    @FXML
+    private void onReturnBookClick(ActionEvent event) {
+        bookService.returnBook(book.getId(), book.getRentedBy());
+        book.setRentedAt(null);
+        book.setRentedBy(null);
+        rentedByLabel.setText("");
+        rentedAtLabel.setText("");
+        rentThisBookButton.setDisable(false);
+    }
+
+    @FXML
+    private void onDeleteBookClick(ActionEvent event) {
+        bookService.deleteByID(book.getId());
+    }
+
+    private void showAdminPanelIfAdmin() {
+        if (user.getUsername().equals("admin")) {
+            returnBookButton.setDisable(false);
+            returnBookButton.setVisible(true);
+            deleteBookButton.setDisable(false);
+            deleteBookButton.setVisible(true);
+        }
+    }
+
+    private void disableAdminPanel() {
+        returnBookButton.setDisable(true);
+        returnBookButton.setVisible(false);
+        deleteBookButton.setDisable(true);
+        deleteBookButton.setVisible(false);
     }
 
     /**

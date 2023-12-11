@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -38,12 +41,39 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Button fx:id="rentThisBookButton" layoutX="493.0" layoutY="51.0" mnemonicParsing="false" onAction="#onRentThisBookClick" style="-fx-background-color: #007BFF;" text="Rent this book" textFill="WHITE" />
+      <Button fx:id="rentThisBookButton" layoutX="493.0" layoutY="51.0" mnemonicParsing="false" onAction="#onRentThisBookClick" style="-fx-background-color: #007BFF;" text="Rent this book" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor></Button>
       <Label layoutX="258.0" layoutY="93.0" text="Rented at:" textFill="WHITE" />
-      <Label fx:id="rentedAtLabel" layoutX="322.0" layoutY="92.0" prefHeight="20.0" prefWidth="256.0" textFill="WHITE">
+      <Label fx:id="rentedAtLabel" layoutX="322.0" layoutY="92.0" prefHeight="20.0" prefWidth="263.0" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font></Label>
+      <Button fx:id="deleteBookButton" layoutX="559.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteBookClick" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #DC3545;">
+         <graphic>
+            <ImageView fitHeight="16.0" fitWidth="15.0" onDragDetected="#onDeleteBookClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/delete-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="returnBookButton" layoutX="493.0" layoutY="14.0" mnemonicParsing="false" onAction="#onReturnBookClick" prefHeight="25.0" prefWidth="54.0" style="-fx-background-color: #28A745;">
+         <graphic>
+            <ImageView fitHeight="38.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/return-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
    </children>
    <padding>
       <Insets right="20.0" />
