@@ -2,7 +2,7 @@
  * Created by Andrii Yeremenko on 11/7/23.
  */
 
-package DAL.SQLDatabase.Utils;
+package DAL.SQLDatabase;
 
 public class ConnectionBuilder {
     ConfigReader configReader;

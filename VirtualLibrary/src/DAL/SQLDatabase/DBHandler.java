@@ -5,11 +5,10 @@
 package DAL.SQLDatabase;
 
 import Core.Models.Result;
-import DAL.SQLDatabase.Utils.ConnectionBuilder;
 
 import java.sql.*;
 
-public class DatabaseHandler {
+public class DBHandler {
 
     /**
      * Method that returns all rows from table using passed class name as table name
@@ -43,7 +42,8 @@ public class DatabaseHandler {
      * @return Result<ResultSet> - ResultSet with statement execution result
      */
     public Result<ResultSet> Delete(Class<?> clazz, String id) {
-        String query = String.format("DELETE FROM %ss WHERE [id] = '%s';", clazz.getSimpleName(), id);
+
+        String query = String.format("DELETE FROM %ss WHERE id = '%s';", clazz.getSimpleName(), id);
         return ExecuteVoid(query);
     }
 
@@ -66,7 +66,7 @@ public class DatabaseHandler {
      * @return Result<ResultSet> - ResultSet with some values fetched from database
      */
     private Result<ResultSet> Execute(String query) {
-        DAL.SQLDatabase.Utils.ConnectionBuilder builder = new DAL.SQLDatabase.Utils.ConnectionBuilder();
+        ConnectionBuilder builder = new ConnectionBuilder();
         try {
             String url = builder.getUrl();
             String username = builder.getUsername();
@@ -87,7 +87,7 @@ public class DatabaseHandler {
      * @return Result<ResultSet> - ResultSet with statement execution result
      */
     private Result<ResultSet> ExecuteVoid(String query) {
-        DAL.SQLDatabase.Utils.ConnectionBuilder builder = new ConnectionBuilder();
+        ConnectionBuilder builder = new ConnectionBuilder();
         try {
             Connection connection = DriverManager.getConnection(builder.getUrl(), builder.getUsername(), builder.getPassword());
             Statement statement = connection.createStatement();

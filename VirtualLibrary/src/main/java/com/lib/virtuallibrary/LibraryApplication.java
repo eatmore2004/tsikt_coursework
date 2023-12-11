@@ -1,5 +1,6 @@
 package com.lib.virtuallibrary;
 
+import DAL.SQLDatabase.DBSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

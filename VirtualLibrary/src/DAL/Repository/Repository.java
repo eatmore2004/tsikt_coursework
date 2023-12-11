@@ -6,7 +6,8 @@ package DAL.Repository;
 
 import Core.Models.BaseEntity;
 import Core.Models.Result;
-import DAL.SQLDatabase.DatabaseHandler;
+import DAL.SQLDatabase.DBHandler;
+import DAL.SQLDatabase.DBSession;
 import DAL_Abstractions.IRepository;
 
 import java.lang.reflect.Field;
@@ -22,7 +23,7 @@ import java.util.UUID;
  * @see IRepository
  */
 public class Repository<T extends BaseEntity> implements IRepository<T>{
-    private final DatabaseHandler databaseHandler;
+    private final DBHandler DBHandler;
     private final Class<T> clazz;
 
     /**
@@ -32,11 +33,11 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
      */
     public Repository(Class<T> clazz) {
         this.clazz = clazz;
-        databaseHandler = new DatabaseHandler();
+        DBHandler = DBSession.getDBHandler();
     }
 
     public Result<List<T>> GetAll() {
-        Result<ResultSet> resultSetResult = databaseHandler.GetAll(clazz.getSimpleName());
+        Result<ResultSet> resultSetResult = DBHandler.GetAll(clazz.getSimpleName());
         if (!resultSetResult.getSuccess()) {
             return new Result<>(resultSetResult.getMessage(), false);
         }
@@ -76,7 +77,6 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         } catch (SQLException | InvocationTargetException | IllegalAccessException |
                  InstantiationException | NoSuchFieldException |
                  NoSuchMethodException e) {
-            e.printStackTrace();
             return new Result<>(e.getMessage(), false);
         }
 
@@ -108,12 +108,12 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         }
         rows.delete(rows.length() - 2, rows.length());
 
-        return databaseHandler.Update(clazz, rows.toString(), strId.toString());
+        return DBHandler.Update(clazz, rows.toString(), strId.toString());
     }
 
 
     public Result<ResultSet> Delete(T item) {
-        return databaseHandler.Delete(clazz, item.getId().toString());
+        return DBHandler.Delete(clazz, item.getId().toString());
     }
 
 
@@ -144,6 +144,6 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
         columns.delete(columns.length() - 2, columns.length());
         values.delete(values.length() - 2, values.length());
 
-        return databaseHandler.Add(clazz, columns.toString(), values.toString());
+        return DBHandler.Add(clazz, columns.toString(), values.toString());
     }
 }
