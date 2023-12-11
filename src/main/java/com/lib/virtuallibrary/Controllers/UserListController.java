@@ -14,14 +14,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * UserListController class. Using to interact with user-list.fxml
+ */
 public class UserListController implements Initializable {
 
     @FXML
@@ -30,9 +35,18 @@ public class UserListController implements Initializable {
     @FXML
     private VBox pageVBox;
 
+    @FXML
+    private TextField searchField;
+
     private IBookService bookService;
     private IUserService userService;
     private ViewChanger viewChanger;
+
+    /**
+     * initialize method. Using to initialize objects in SampleController after sample.fxml was loaded
+     * @param url address of fxml file, which initialize the controller
+     * @param resourceBundle data which can be used by application
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bookService = new BookService(new Repository(Book.class));
@@ -44,7 +58,16 @@ public class UserListController implements Initializable {
     
     @FXML
     public void onSearchClick(ActionEvent event) {
-
+        removeAllBooksFromScreen();
+        List<User> searchedUsers = getUsersBySearch();
+        if (searchedUsers != null) {
+            displayUsers(searchedUsers);
+        } else {
+            removeAllBooksFromScreen();
+            List<BaseEntity> users = loadUsersFromDb();
+            displayUsers(users);
+        }
+        searchField.setText("");
     }
 
     @FXML
@@ -52,11 +75,35 @@ public class UserListController implements Initializable {
         viewChanger.switchScenes(userListAnchorPane, "account.fxml");
     }
 
+    /**
+     * getBooksBySearch method. Using to find books from user input
+     * @return List<Book> if books were found and null if not
+     */
+    private List<User> getUsersBySearch() {
+        Result<List<User>> searchedUsers = userService.getAllByFirstName(searchField.getText());
+        if (!searchedUsers.getSuccess()) {
+            searchedUsers = userService.getAllByLastName(searchField.getText());
+        }
+        if (!searchedUsers.getSuccess()) {
+            searchedUsers = userService.getAllByEmail(searchField.getText());
+        }
+
+        return searchedUsers.getData();
+    }
+
+    /**
+     * loadUsersFromDb method. Using to load users from database
+     * @return List<User> with users
+     */
     private List<BaseEntity> loadUsersFromDb() {
         Result<List<BaseEntity>> userResult = userService.getAll();
         return userResult.getData();
     }
 
+    /**
+     * displayUsers method. Using to display users on screen 
+     * @param users
+     */
     private void displayUsers(List<? extends BaseEntity> users) {
         for (var i : users) {
             try {
@@ -70,5 +117,12 @@ public class UserListController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * removeAllBooksFromScreen method. Using to remove all books from the screen
+     */
+    private void removeAllBooksFromScreen() {
+        pageVBox.getChildren().clear();
     }
 }

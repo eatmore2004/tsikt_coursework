@@ -93,6 +93,7 @@ public class BookCardController implements Initializable {
         rentThisBookButton.setDisable(true);
         rentedByLabel.setText(user.getEmail());
         rentedAtLabel.setText(new Date().toString());
+        returnBookButton.setDisable(false);
 
         bookService.rentBook(book.getTitle(), user.getId());
     }
@@ -104,13 +105,14 @@ public class BookCardController implements Initializable {
      */
     @FXML
     private void onReturnBookClick(ActionEvent event) {
-        bookService.returnBook(book.getId(), book.getRentedBy());
-        book.setRentedAt(null);
-        book.setRentedBy(null);
-        rentedByLabel.setText("");
-        rentedAtLabel.setText("");
-        rentThisBookButton.setDisable(false);
-        returnBookButton.setDisable(true);
+        if (bookService.returnBook(book.getId(), book.getRentedBy()).getSuccess()) {
+            book.setRentedAt(null);
+            book.setRentedBy(null);
+            rentedByLabel.setText("");
+            rentedAtLabel.setText("");
+            rentThisBookButton.setDisable(false);
+            returnBookButton.setDisable(true);
+        }
     }
 
     /**

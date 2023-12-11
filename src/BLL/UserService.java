@@ -49,7 +49,7 @@ public class UserService extends GenericService implements IUserService {
     @Override
     public Result<User> getByUsername(String username) {
         if (username == null || username.isEmpty()) {
-            return new Result<>("First name cannot be empty", false);
+            return new Result<>("Username cannot be empty", false);
         }
         Result<List<User>> result = getAllByPredicate(x -> x.getUsername().equals(username));
 
