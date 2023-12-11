@@ -51,6 +51,9 @@ public class AccountController implements Initializable {
     private Button returnAllBooksButton;
 
     @FXML
+    private Button userListRedirectButton;
+
+    @FXML
     private Label nameLabel;
 
     @FXML
@@ -177,6 +180,17 @@ public class AccountController implements Initializable {
     }
 
     /**
+     * onUserListRedirectClick method. Using to redirect ti user-list.fxml page
+     * @param event - object of class ActionEvent. Using to describe some event
+     *             after addUserButton was pressed
+     * @throws IOException
+     */
+    @FXML
+    private void onUserListRedirectClick(ActionEvent event) throws IOException {
+        viewChanger.switchScenes(accountAnchorPane, "user-list.fxml");
+    }
+
+    /**
      * showUserInfo method. Using to display user information in user's account
      */
     private void showUserInfo() {
@@ -191,6 +205,8 @@ public class AccountController implements Initializable {
     private void disableAdminPanel() {
         addUserButton.setVisible(false);
         addUserButton.setDisable(true);
+        userListRedirectButton.setVisible(false);
+        userListRedirectButton.setDisable(true);
     }
 
     /**
@@ -200,6 +216,8 @@ public class AccountController implements Initializable {
         if (user.getUsername().equals("admin")) {
             addUserButton.setVisible(true);
             addUserButton.setDisable(false);
+            userListRedirectButton.setVisible(true);
+            userListRedirectButton.setDisable(false);
         }
     }
 

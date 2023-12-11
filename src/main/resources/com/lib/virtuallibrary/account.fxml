@@ -68,5 +68,6 @@
             </ImageView>
          </graphic>
       </Button>
+      <Button fx:id="userListRedirectButton" layoutX="486.0" layoutY="64.0" mnemonicParsing="false" onAction="#onUserListRedirectClick" style="-fx-background-color: #007BFF;" text="User list" textFill="WHITE" />
    </children>
 </AnchorPane>
