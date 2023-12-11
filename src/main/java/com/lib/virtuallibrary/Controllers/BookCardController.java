@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 /**
  * BookCardController class. Using to work with book-card.fxml
@@ -73,6 +72,11 @@ public class BookCardController implements Initializable {
         user = Session.getUser().getData();
     }
 
+    /**
+     * initialize method. Using to initialize objects in AccountController after account.fxml was loaded
+     * @param url address of fxml file, which initialize the controller
+     * @param resourceBundle data which can be used by application
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         disableAdminPanel();
@@ -93,6 +97,11 @@ public class BookCardController implements Initializable {
         bookService.rentBook(book.getTitle(), user.getId());
     }
 
+    /**
+     * onReturnBookClick method. Using to return book to the library ONLY by admin
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *      after rentThisBookButton was pressed
+     */
     @FXML
     private void onReturnBookClick(ActionEvent event) {
         bookService.returnBook(book.getId(), book.getRentedBy());
@@ -101,13 +110,26 @@ public class BookCardController implements Initializable {
         rentedByLabel.setText("");
         rentedAtLabel.setText("");
         rentThisBookButton.setDisable(false);
+        returnBookButton.setDisable(true);
     }
 
+    /**
+     * onDeleteBookClick method. Using to delete book from the library ONLY by admin
+     * @param event is an object of class ActionEvent. Using to describe some event
+     *      after rentThisBookButton was pressed
+     */
     @FXML
     private void onDeleteBookClick(ActionEvent event) {
-        bookService.deleteByID(book.getId());
+        if (bookService.deleteByID(book.getId()).getSuccess()) {
+            disableAdminPanel();
+            rentThisBookButton.setDisable(true);
+            setDeletedBookLabelInfo();
+        }
     }
 
+    /**
+     * showAdminPanelIfAdmin method. Using to show interface which allowed ONLY for admin
+     */
     private void showAdminPanelIfAdmin() {
         if (user.getUsername().equals("admin")) {
             returnBookButton.setDisable(false);
@@ -117,11 +139,25 @@ public class BookCardController implements Initializable {
         }
     }
 
+    /**
+     * disableAdminPanel method. Using to hide interface which allowed ONLY for admin
+     */
     private void disableAdminPanel() {
         returnBookButton.setDisable(true);
         returnBookButton.setVisible(false);
         deleteBookButton.setDisable(true);
         deleteBookButton.setVisible(false);
+    }
+
+    /**
+     * setDeletedBookLabelInfo method. Using to refresh book information after it was deleted
+     */
+    private void setDeletedBookLabelInfo() {
+        titleLabel.setText("Book was deleted!");
+        authorLabel.setText(" - ");
+        genreLabel.setText(" - ");
+        pagesLabel.setText(" - ");
+        yearLabel.setText(" - ");
     }
 
     /**
@@ -140,6 +176,9 @@ public class BookCardController implements Initializable {
             Result<User> user = userService.getByID(book.getRentedBy());
             rentedByLabel.setText(user.getData().getEmail());
             rentedAtLabel.setText(book.getRentedAt());
+        }
+        if (book.getRentedBy() == null) {
+            returnBookButton.setDisable(true);
         }
     }
 }
