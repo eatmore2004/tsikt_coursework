@@ -165,6 +165,12 @@ public class AccountController implements Initializable {
         viewChanger.switchScenes(accountAnchorPane, "add-user.fxml");
     }
 
+    /**
+     * onRefreshClick method. Using to refresh current page
+     * @param event - object of class ActionEvent. Using to describe some event
+     *             after addUserButton was pressed
+     * @throws IOException
+     */
     @FXML
     private void onRefreshClick(ActionEvent event) throws IOException {
         viewChanger.switchScenes(accountAnchorPane, "account.fxml");
